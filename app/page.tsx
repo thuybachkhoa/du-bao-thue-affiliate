@@ -832,7 +832,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
   className="mt-4 bg-slate-50 rounded-xl p-4"
 >
 <div className="bg-white border border-orange-200 rounded-xl p-4 mb-5">
-  <div className="flex flex-col items-center text-center">
+  <div className="flex flex-col md:flex-row items-center gap-4">
 
     <Image
       src="/icon.png"
@@ -842,7 +842,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
       className="shrink-0"
     />
 
-    <div className="border-t-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full">
+    <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
       <h2 className="font-bold text-xl md:text-2xl text-slate-800">
         APP DỰ TÍNH THUẾ TNCN 2026
       </h2>
