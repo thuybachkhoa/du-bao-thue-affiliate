@@ -503,7 +503,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
           <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
 
-  <div className="flex justify-between items-center mb-4">
+  <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
     <div>
   <h2 className="font-bold text-xl">
@@ -526,7 +526,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   </div>
 
-  <div className="grid grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
     <div>
 
@@ -658,7 +658,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
     <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
 
-  <div className="flex justify-between items-center mb-4">
+  <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
     <div>
   <h2 className="font-bold text-xl">
@@ -683,7 +683,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   </div>
 
-  <div className="grid grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
     {/* Shopee */}
     <div>
@@ -832,7 +832,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
   className="mt-4 bg-slate-50 rounded-xl p-4"
 >
 <div className="bg-white border border-orange-200 rounded-xl p-4 mb-5">
-  <div className="flex items-center gap-4">
+  <div className="flex flex-col md:flex-row items-center gap-4">
 
     <Image
       src="/icon.png"
@@ -842,8 +842,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
       className="shrink-0"
     />
 
-    <div className="border-l-2 border-orange-400 pl-4">
-      <h2 className="font-bold text-2xl text-slate-800">
+    <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full">
+      <h2 className="font-bold text-xl md:text-2xl text-slate-800">
         APP DỰ TÍNH THUẾ TNCN 2026
       </h2>
 
@@ -885,7 +885,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         DỰ KIẾN ĐƯỢC HOÀN THUẾ
       </div>
 
-      <div className="text-4xl font-bold text-green-600 leading-none">
+      <div className="text-2xl md:text-4xl font-bold text-green-600 break-all">
         {formatMoney(result.refundOrPayMore).replace(" VNĐ", "")}
       
      <span className="text-2xl font-semibold text-green-600 ml-2">
@@ -915,7 +915,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         DỰ KIẾN PHẢI NỘP THÊM
       </div>
 
-      <div className="text-4xl font-bold text-red-600 leading-none">
+      <div className="text-2xl md:text-4xl font-bold text-red-600 break-all">
         {formatMoney(Math.abs(result.refundOrPayMore)).replace(" VNĐ", "")}
       <span className="text-xl font-semibold text-red-600 ml-2">
     VNĐ
