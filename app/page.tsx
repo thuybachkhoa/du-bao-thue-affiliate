@@ -266,52 +266,30 @@ Thủy Bách Khoa | Zalo 0932 171 685
 `;
 
   try {
-  const handleShare = async () => {
-  const shareText = `...`;
+    const isMobile =
+  /Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  );
 
-  try {
-    if (
-      navigator.share &&
-      /Android|iPhone|iPad|iPod/i.test(
-        navigator.userAgent
-      )
-    ) {
-      await navigator.share({
-        title: "DỰ TÍNH THUẾ TNCN 2026",
-        text: shareText,
-      });
+if (navigator.share && isMobile) {
+  await navigator.share({
+    title: "DỰ TÍNH THUẾ TNCN 2026",
+    text: shareText,
+  });
 
-      return;
-    }
+  return;
+}
 
     await navigator.clipboard.writeText(
       shareText
     );
 
     alert(
-      "Đã sao chép kết quả. Hãy dán vào Zalo, Facebook hoặc Messenger."
+      "Đã sao chép kết quả. Hãy dán vào Zalo hoặc Facebook."
     );
   } catch (error) {
     console.error(error);
-
-    await navigator.clipboard.writeText(
-      shareText
-    );
-
-    alert(
-      "Đã sao chép kết quả vào clipboard."
-    );
   }
-};
-
-  await navigator.clipboard.writeText(shareText);
-
-  alert(
-    "Đã sao chép kết quả vào clipboard."
-  );
-} catch (error) {
-  console.error(error);
-}
 };
   const handleExportPDF = async () => {
   if (!resultRef.current) return;
