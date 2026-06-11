@@ -501,7 +501,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </div>
   </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
+          <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 
   <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
@@ -526,7 +526,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   </div>
 
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
 
     <div>
 
@@ -554,7 +554,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         formatInputNumber(e.target.value)
       )
     }
-    className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+    className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
   />
 
 </div>
@@ -585,7 +585,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         formatInputNumber(e.target.value)
       )
     }
-    className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+    className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
   />
 
 </div>
@@ -616,7 +616,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         formatInputNumber(e.target.value)
       )
     }
-    className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+    className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
   />
 
 </div>
@@ -647,7 +647,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         formatInputNumber(e.target.value)
       )
     }
-    className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+    className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
   />
 
 </div>
@@ -656,7 +656,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
 </div>
 
-    <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
+    <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 
   <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
@@ -683,7 +683,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   </div>
 
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
 
     {/* Shopee */}
     <div>
@@ -710,7 +710,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         onChange={(e) =>
           setShopeeTax(formatInputNumber(e.target.value))
         }
-        className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+        className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
       />
 
     </div>
@@ -740,7 +740,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         onChange={(e) =>
           setTiktokTax(formatInputNumber(e.target.value))
         }
-        className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+        className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
       />
 
     </div>
@@ -770,7 +770,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         onChange={(e) =>
           setLazadaTax(formatInputNumber(e.target.value))
         }
-        className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+        className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
       />
 
     </div>
@@ -800,7 +800,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
         onChange={(e) =>
           setOtherTax(formatInputNumber(e.target.value))
         }
-        className="w-full border rounded-lg px-3 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
+        className="w-full border rounded-lg px-2 py-2 text-center placeholder:text-slate-400 placeholder:italic placeholder:text-sm"
       />
 
     </div>
