@@ -385,7 +385,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </div>
 
 </div>
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
   {/* Người phụ thuộc */}
   <div>
@@ -409,7 +409,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </div>
 
   {/* Bảo hiểm */}
-  <div>
+  <div className="flex flex-col items-center">
     <label className="font-semibold text-base block mb-2">
       🛡️ Bảo hiểm bắt buộc
     </label>
@@ -957,7 +957,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   <div className="mt-2 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic pl-4 md:pl-10">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>↳ Bảo hiểm bắt buộc</span>
 
       <span className="md:text-right">
@@ -965,7 +965,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-10">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>
         ↳ Giảm trừ bản thân & người phụ thuộc
       </span>
