@@ -1,6 +1,9 @@
   "use client";
 
-  import { useState } from "react";
+  import { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
   import Image from "next/image";
 
   export default function Home() {
@@ -35,10 +38,10 @@ const [insuranceAmount, setInsuranceAmount] =
   taxPaid: 0,
   refundOrPayMore: 0,
 });
-
-    const formatMoney = (value: number | undefined) => {
-      return value.toLocaleString("vi-VN") + " VNĐ";
-    };
+const resultRef = useRef<HTMLDivElement>(null);
+    const formatMoney = (value?: number) => {
+  return (value ?? 0).toLocaleString("vi-VN") + " VNĐ";
+};
     const numberToVietnameseWords = (num: number): string => {
   if (num === 0) return "Không đồng";
 
@@ -240,6 +243,84 @@ setInsuranceAmount("");
   refundOrPayMore: 0,
 });
   };
+  const handleShare = async () => {
+  const shareText = `
+📊 KẾT QUẢ DỰ TÍNH THUẾ TNCN 2026
+
+💰 Tổng thu nhập: ${result.totalIncome.toLocaleString("vi-VN")} VNĐ
+📈 Thu nhập tính thuế: ${result.taxableIncome.toLocaleString("vi-VN")} VNĐ
+🏛️ Tổng thuế phải nộp: ${result.taxPayable.toLocaleString("vi-VN")} VNĐ
+✅ Thuế đã khấu trừ: ${result.taxPaid.toLocaleString("vi-VN")} VNĐ
+
+${
+  result.refundOrPayMore >= 0
+    ? `🎉 Dự kiến được hoàn: ${result.refundOrPayMore.toLocaleString("vi-VN")} VNĐ`
+    : `⚠️ Dự kiến phải nộp thêm: ${Math.abs(
+        result.refundOrPayMore
+      ).toLocaleString("vi-VN")} VNĐ`
+}
+
+🔗 https://du-tinh-tncn-2026.vercel.app
+
+Thủy Bách Khoa | Zalo 0932 171 685
+`;
+
+  try {
+  await navigator.clipboard.writeText(shareText);
+
+  alert(
+    "Đã sao chép kết quả vào clipboard.\nHãy mở Zalo và nhấn Ctrl + V để gửi."
+  );
+} catch (error) {
+  console.error(error);
+}
+};
+  const handleExportPDF = async () => {
+  if (!resultRef.current) return;
+
+  try {
+    await new Promise(resolve =>
+  setTimeout(resolve, 500)
+);
+    const dataUrl = await toPng(
+  resultRef.current,
+  {
+    pixelRatio: 4,
+    backgroundColor: "#ffffff",
+  }
+);
+
+   const pdf = new jsPDF();
+
+const imgProps =
+  pdf.getImageProperties(dataUrl);
+
+const pdfWidth =
+  pdf.internal.pageSize.getWidth();
+
+const pdfHeight =
+  (imgProps.height * pdfWidth) /
+  imgProps.width;
+
+pdf.addImage(
+  dataUrl,
+  "PNG",
+  0,
+  10,
+  pdfWidth,
+  pdfHeight
+);
+
+const today = new Date()
+  .toLocaleDateString("vi-VN")
+  .replace(/\//g, "-");
+
+pdf.save(`thue-tncn-${today}.pdf`);
+  } catch (error) {
+    console.error(error);
+    alert(String(error));
+  }
+};
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
@@ -725,9 +806,49 @@ setInsuranceAmount("");
           >
             📝  TÍNH TOÁN NGAY
           </button>
+<button
+  onClick={handleExportPDF}
+  className="w-full mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-4 text-xl rounded-xl"
+>
+  📄 XUẤT PDF
+</button>
+<button
+  onClick={handleShare}
+  className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-4 text-xl rounded-xl"
+>
+  📱 CHIA SẺ KẾT QUẢ
+</button>
+          <div
+  ref={resultRef}
+  className="mt-4 bg-slate-50 rounded-xl p-4"
+>
+<div className="bg-white border border-orange-200 rounded-xl p-4 mb-5">
+  <div className="flex items-center gap-4">
 
-          <div className="mt-4 bg-slate-50 rounded-xl p-4">
+    <Image
+      src="/icon.png"
+      alt="App Icon"
+      width={72}
+      height={72}
+      className="shrink-0"
+    />
 
+    <div className="border-l-2 border-orange-400 pl-4">
+      <h2 className="font-bold text-3xl text-slate-800">
+        APP DỰ TÍNH THUẾ TNCN 2026
+      </h2>
+
+      <p className="text-sm text-slate-600 mt-1">
+        📅 Ngày xuất: {new Date().toLocaleString("vi-VN")}
+      </p>
+
+      <p className="text-sm text-slate-600">
+        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932 171 685
+      </p>
+    </div>
+
+  </div>
+</div>
             <div className="text-left mb-4">
     <h2 className="font-bold text-2xl text-[#C26A1B]">
       📋  KẾT QUẢ DỰ TÍNH QUYẾT TOÁN THUẾ

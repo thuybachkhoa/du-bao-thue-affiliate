@@ -13,8 +13,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Thuế TNCN 2026",
-  description: "Công cụ dự tính thuế thu nhập cá nhân dành cho Affiliate",
+  title: "DỰ TÍNH THUẾ TNCN 2026",
+  description:
+    "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
+
+  openGraph: {
+    title: "DỰ TÍNH THUẾ TNCN 2026",
+    description:
+      "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
+    url: "https://du-tinh-tncn-2026.vercel.app",
+    siteName: "DỰ TÍNH THUẾ TNCN 2026",
+    images: [
+      {
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "Dự tính Thuế TNCN 2026",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
