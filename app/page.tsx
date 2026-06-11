@@ -352,7 +352,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
 
-    <div className="flex justify-between items-center mb-4">
+    <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
   <div>
   <h2 className="font-bold text-xl">
@@ -364,7 +364,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </p>
 </div>
 
-  <div className="relative">
+  <div className="relative w-full md:w-auto">
 
   <input
     type="text"
@@ -375,7 +375,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
       )
     }
     placeholder="Nhập số lương"
-    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:italic placeholder:font-normal placeholder:text-amber-400"
+    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:italic placeholder:font-normal placeholder:text-amber-400"
   />
 
   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-700 font-bold text-lg">
@@ -385,7 +385,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </div>
 
 </div>
-<div className="grid grid-cols-3 gap-6 items-start">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
 
   {/* Người phụ thuộc */}
   <div>
@@ -843,15 +843,15 @@ pdf.save(`thue-tncn-${today}.pdf`);
     />
 
     <div className="border-l-2 border-orange-400 pl-4">
-      <h2 className="font-bold text-3xl text-slate-800">
+      <h2 className="font-bold text-2xl text-slate-800">
         APP DỰ TÍNH THUẾ TNCN 2026
       </h2>
 
-      <p className="text-sm text-slate-600 mt-1">
+      <p className="text-base text-slate-600 mt-1">
         📅 Ngày xuất: {new Date().toLocaleString("vi-VN")}
       </p>
 
-      <p className="text-sm text-slate-600">
+      <p className="text-base text-slate-600">
         👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932 171 685
       </p>
     </div>
@@ -869,8 +869,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </div>
 
   {result.refundOrPayMore >= 0 ? (
-  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 pl-30 pb-1 mb-5">
-  <div className="flex items-start gap-12">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-5">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
     <Image
       src="/wallet-green.png"
@@ -899,8 +899,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </div>
 </div>
   ) : (
-    <div className="bg-red-50 border border-red-200 rounded-2xl p-3  pl-30 pb-1 mb-5">
-  <div className="flex items-start gap-12">
+    <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-5">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
     <Image
       src="/wallet-red.png"
