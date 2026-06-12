@@ -922,11 +922,12 @@ pdf.save(`thue-tncn-${today}.pdf`);
   <div className="flex flex-col md:flex-row items-center gap-4">
 
     <img
-  src="/icon.png"
+  src="/icon.png?v=1"
   alt="App Icon"
   width={72}
   height={72}
   className="shrink-0"
+  loading="eager"
 />
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
