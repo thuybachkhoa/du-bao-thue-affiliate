@@ -379,6 +379,12 @@ pdf.save(`thue-tncn-${today}.pdf`);
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
+        <form
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleCalculate();
+  }}
+>  
 
           <h1 className="text-5xl font-bold text-center text-[#177D96]">
             DỰ TÍNH THUẾ 2026
@@ -857,7 +863,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
           {/* Nút chính */}
 <button
-  onClick={handleCalculate}
+  type="submit"
   className="w-full bg-[#177D96] hover:bg-[#146F85] text-white rounded-xl px-5 py-2 shadow-md transition-all"
 >
   <div className="relative flex items-center justify-center">
@@ -889,7 +895,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
 
   <button
-    onClick={handleExportPDF}
+    type="button"
+  onClick={handleExportPDF}
     className="border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
@@ -908,7 +915,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </button>
 
   <button
-    onClick={handleShare}
+    type="button"
+  onClick={handleShare}
     className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
@@ -1048,11 +1056,11 @@ pdf.save(`thue-tncn-${today}.pdf`);
  <div className="bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
 
   <div className="flex justify-between items-center">
-    <span className="font-medium text-green-700">
+    <span className="font-medium">
       🟢 Tổng giảm trừ
     </span>
 
-    <span className="font-semibold text-green-700">
+    <span className="font-semibold">
       {formatMoney(result.deduction)}
     </span>
   </div>
@@ -1134,8 +1142,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
             </div>
 
           </div>
-
+</form>
         </div>
-      </div>
+        </div>
     );
   }
