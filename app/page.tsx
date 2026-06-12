@@ -336,7 +336,7 @@ pdf.addImage(
 heightLeft -= pageHeight;
 
 while (heightLeft > 0) {
-  position = heightLeft - pdfHeight;
+  position = heightLeft - imgHeight + 8;
 
   pdf.addPage();
 
