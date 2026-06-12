@@ -921,13 +921,13 @@ pdf.save(`thue-tncn-${today}.pdf`);
 <div className="bg-white border border-orange-200 rounded-xl p-4 mb-5">
   <div className="flex flex-col md:flex-row items-center gap-4">
 
-    <Image
-      src="/icon.png"
-      alt="App Icon"
-      width="72"
-      height="72"
-      className="shrink-0"
-    />
+    <img
+  src="/icon.png"
+  alt="App Icon"
+  width={72}
+  height={72}
+  className="shrink-0"
+/>
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
       <h2 className="font-bold text-xl md:text-2xl text-[#177D96]">
@@ -959,13 +959,13 @@ pdf.save(`thue-tncn-${today}.pdf`);
   <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-5">
   <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
-    <Image
-      src="/wallet-green.png"
-      alt="Hoàn thuế"
-      width="80"
-      height="80"
-      className="shrink-0"
-    />
+    <img
+  src="/wallet-green.png"
+  alt="Hoàn thuế"
+  width={80}
+  height={80}
+  className="shrink-0"
+/>
 
     <div>
       <div className="text-green-600 text-base font-semibold uppercase">
@@ -989,13 +989,13 @@ pdf.save(`thue-tncn-${today}.pdf`);
     <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-5">
   <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
-    <Image
-      src="/wallet-red.png"
-      alt="Nộp thêm"
-      width="80"
-      height="80"
-      className="shrink-0"
-    />
+    <img
+  src="/wallet-red.png"
+  alt="Nộp thêm"
+  width={80}
+  height={80}
+  className="shrink-0"
+/>
 
     <div>
       <div className="text-red-600 text-base font-semibold uppercase">
