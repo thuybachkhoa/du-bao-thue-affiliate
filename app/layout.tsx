@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description:
     "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
 
+     icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
+  
   openGraph: {
     title: "DỰ TÍNH THUẾ TNCN 2026",
     description:
