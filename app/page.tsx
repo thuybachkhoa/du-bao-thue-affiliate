@@ -816,24 +816,37 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
 </div>
 
-          <button
-            onClick={handleCalculate}
-            className="w-full bg-[#177D96] hover:bg-[#13697F] text-white font-bold py-4 text-xl rounded-xl"
-          >
-            📝  TÍNH TOÁN NGAY
-          </button>
-<button
-  onClick={handleExportPDF}
-  className="w-full mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-4 text-xl rounded-xl"
->
-  📄 XUẤT PDF
-</button>
-<button
-  onClick={handleShare}
-  className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-4 text-xl rounded-xl"
->
-  📱 CHIA SẺ KẾT QUẢ
-</button>
+          <div className="mt-4 space-y-3">
+
+  <button
+    onClick={handleCalculate}
+    className="w-full bg-[#177D96] hover:bg-[#13697F] text-white font-bold py-4 text-xl rounded-xl shadow-md transition"
+  >
+    📝 TÍNH TOÁN NGAY
+  </button>
+
+  {result.totalIncome > 0 && (
+    <div className="grid grid-cols-2 gap-3">
+
+      <button
+        onClick={handleExportPDF}
+        className="border-2 border-red-500 text-red-600 bg-white hover:bg-red-50 font-bold py-3 rounded-xl transition"
+      >
+        📄 XUẤT PDF
+      </button>
+
+      <button
+        onClick={handleShare}
+        className="border-2 border-green-500 text-green-600 bg-white hover:bg-green-50 font-bold py-3 rounded-xl transition"
+      >
+        📱 CHIA SẺ KẾT QUẢ
+      </button>
+
+    </div>
+  )}
+
+</div>
+
           <div
   ref={resultRef}
   className="mt-4 bg-slate-50 rounded-xl p-4"
@@ -850,16 +863,16 @@ pdf.save(`thue-tncn-${today}.pdf`);
     />
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
-      <h2 className="font-bold text-xl md:text-2xl text-slate-800">
+      <h2 className="font-bold text-[#177D96] text-xl md:text-2xl">
         APP DỰ TÍNH THUẾ TNCN 2026
       </h2>
 
-      <p className="text-base text-slate-600 mt-1">
+      <p className="text-base italic text-slate-600 mt-1">
         📅 Ngày xuất: {new Date().toLocaleString("vi-VN")}
       </p>
 
-      <p className="text-base text-slate-600">
-        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932 171 685
+      <p className="text-base italic text-slate-600">
+        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932-171-685
       </p>
     </div>
 
@@ -953,18 +966,18 @@ pdf.save(`thue-tncn-${today}.pdf`);
  <div className="bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
 
   <div className="flex justify-between items-center">
-    <span className="font-medium text-green-700">
+    <span className="font-medium">
       🟢 Tổng giảm trừ
     </span>
 
-    <span className="font-semibold text-green-700">
+    <span className="font-semibold">
       {formatMoney(result.deduction)}
     </span>
   </div>
 
   <div className="mt-2 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-ml text-gray-500 italic mt-1 pl-4">
       <span>↳ Bảo hiểm bắt buộc</span>
 
       <span className="md:text-right">
@@ -972,7 +985,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-ml text-gray-500 italic mt-1 pl-4">
       <span>
         ↳ Giảm trừ bản thân & người phụ thuộc
       </span>
