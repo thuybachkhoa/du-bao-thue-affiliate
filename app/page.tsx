@@ -2,7 +2,6 @@
 
   import { useState, useRef } from "react";
 import jsPDF from "jspdf";
-import { toPng } from "html-to-image";
 import html2canvas from "html2canvas";
   import Image from "next/image";
 
@@ -298,15 +297,20 @@ if (navigator.share && isMobile) {
     await new Promise(resolve =>
   setTimeout(resolve, 500)
 );
-    const dataUrl = await toPng(
+    const canvas = await html2canvas(
   resultRef.current,
   {
-    pixelRatio: 4,
+    scale: 2,
+    useCORS: true,
     backgroundColor: "#ffffff",
+    scrollY: -window.scrollY,
   }
 );
 
-   const pdf = new jsPDF();
+const dataUrl =
+  canvas.toDataURL("image/png");
+
+  const pdf = new jsPDF();
 
 const imgProps =
   pdf.getImageProperties(dataUrl);
@@ -317,6 +321,7 @@ const pdfWidth =
 const pdfHeight =
   (imgProps.height * pdfWidth) /
   imgProps.width;
+  console.log("PDF HEIGHT =", pdfHeight);
 
 pdf.addImage(
   dataUrl,
