@@ -293,7 +293,10 @@ if (navigator.share && isMobile) {
 };
   const handleExportPDF = async () => {
   if (!resultRef.current) return;
-
+const isMobile =
+  /Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  );
   try {
     await new Promise(resolve =>
   setTimeout(resolve, 1500)
@@ -305,7 +308,22 @@ if (navigator.share && isMobile) {
     backgroundColor: "#ffffff",
   }
 );
+const today = new Date()
+  .toLocaleDateString("vi-VN")
+  .replace(/\//g, "-");
 
+if (isMobile) {
+  const link = document.createElement("a");
+
+  link.download = `thue-tncn-${today}.png`;
+  link.href = dataUrl;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  return;
+}
    const pdf = new jsPDF();
 
 const imgProps =
@@ -351,9 +369,6 @@ while (heightLeft > 0) {
 
   heightLeft -= pageHeight;
 }
-const today = new Date()
-  .toLocaleDateString("vi-VN")
-  .replace(/\//g, "-");
 
 pdf.save(`thue-tncn-${today}.pdf`);
   } catch (error) {

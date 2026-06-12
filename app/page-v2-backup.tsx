@@ -935,7 +935,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
       </h2>
 
       <p className="text-base italic text-slate-600 mt-1">
-  📅 Ngày xuất: --
+  📅 Ngày xuất: {new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}
 </p>
 
       <p className="text-base italic text-slate-600">
