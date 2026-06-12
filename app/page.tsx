@@ -1,8 +1,9 @@
-  "use client";
+ "use client";
 
   import { useState, useRef } from "react";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
   import Image from "next/image";
 
   export default function Home() {
@@ -294,60 +295,43 @@ if (navigator.share && isMobile) {
   if (!resultRef.current) return;
 
   try {
+    await new Promise(resolve =>
+  setTimeout(resolve, 500)
+);
     const dataUrl = await toPng(
-      resultRef.current,
-      {
-        cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: "#ffffff",
-      }
-    );
-
-    const pdf = new jsPDF();
-
-    const imgProps =
-      pdf.getImageProperties(dataUrl);
-
-    const pdfWidth =
-      pdf.internal.pageSize.getWidth();
-
-    const pdfHeight =
-      (imgProps.height * pdfWidth) /
-      imgProps.width;
-
-    pdf.addImage(
-      dataUrl,
-      "PNG",
-      0,
-      0,
-      pdfWidth,
-      pdfHeight
-    );
-
-    const today = new Date()
-      .toLocaleDateString("vi-VN")
-      .replace(/\//g, "-");
-
-    pdf.save(`thue-tncn-${today}.pdf`);
-  } catch (error) {
-    console.error(error);
-    alert(String(error));
+  resultRef.current,
+  {
+    pixelRatio: 4,
+    backgroundColor: "#ffffff",
   }
-};
-const handleTestPNG = async () => {
-  if (!resultRef.current) return;
+);
 
-  try {
-    const dataUrl = await toPng(
-      resultRef.current,
-      {
-        cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: "#ffffff",
-      }
-    );
+   const pdf = new jsPDF();
 
-    window.open(dataUrl, "_blank");
+const imgProps =
+  pdf.getImageProperties(dataUrl);
+
+const pdfWidth =
+  pdf.internal.pageSize.getWidth();
+
+const pdfHeight =
+  (imgProps.height * pdfWidth) /
+  imgProps.width;
+
+pdf.addImage(
+  dataUrl,
+  "PNG",
+  0,
+  10,
+  pdfWidth,
+  pdfHeight
+);
+
+const today = new Date()
+  .toLocaleDateString("vi-VN")
+  .replace(/\//g, "-");
+
+pdf.save(`thue-tncn-${today}.pdf`);
   } catch (error) {
     console.error(error);
     alert(String(error));
@@ -832,60 +816,80 @@ const handleTestPNG = async () => {
 
 </div>
 
-          <div className="mt-4 space-y-3">
+          {/* Nút chính */}
+<button
+  onClick={handleCalculate}
+  className="w-full bg-[#177D96] hover:bg-[#146F85] text-white rounded-xl px-5 py-2 shadow-md transition-all"
+>
+  <div className="relative flex items-center justify-center">
 
-  <button
-    onClick={handleCalculate}
-    className="w-full bg-[#177D96] hover:bg-[#13697F] text-white font-bold py-4 text-xl rounded-xl shadow-md transition"
-  >
-    📝 TÍNH TOÁN NGAY
-  </button>
+  <span className="text-3xl mr-3">
+    📋
+  </span>
 
-  {result.totalIncome > 0 && (
-    <div className="grid grid-cols-2 gap-3">
-
-      <button
-        onClick={handleExportPDF}
-        className="border-2 border-red-500 text-red-600 bg-white hover:bg-red-50 font-bold py-3 rounded-xl transition"
-      >
-        📄 XUẤT PDF
-      </button>
-
-      <button
-        onClick={handleShare}
-        className="border-2 border-green-500 text-green-600 bg-white hover:bg-green-50 font-bold py-3 rounded-xl transition"
-      >
-        📱 CHIA SẺ KẾT QUẢ
-      </button>
-
+  <div className="text-center">
+    <div className="font-bold text-lg">
+      TÍNH TOÁN NGAY
     </div>
-      )}
-<div className="grid grid-cols-3 gap-3">
+
+    <div className="text-sm opacity-90">
+      Tính thuế TNCN chỉ trong vài giây
+    </div>
+  </div>
+
+  </div>
+</button>
+
+{/* Nút phụ */}
+{(
+  result.totalIncome > 0 ||
+  result.taxPayable > 0 ||
+  result.taxPaid > 0
+) && (
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
 
   <button
     onClick={handleExportPDF}
-    className="border-2 border-red-500 text-red-600 bg-white hover:bg-red-50 font-bold py-3 rounded-xl transition"
+    className="border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
   >
-    📄 PDF
+    <div className="flex items-center justify-center gap-2">
+      <span className="text-xl">📄</span>
+
+      <div className="text-left">
+        <div className="font-bold text-red-500 text-lg">
+          XUẤT PDF
+        </div>
+
+        <div className="text-sm text-gray-500">
+          Lưu kết quả ra PDF
+        </div>
+      </div>
+    </div>
   </button>
 
   <button
     onClick={handleShare}
-    className="border-2 border-green-500 text-green-600 bg-white hover:bg-green-50 font-bold py-3 rounded-xl transition"
+    className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
   >
-    📱 SHARE
-  </button>
+    <div className="flex items-center justify-center gap-2">
+      <span className="text-xl">🔗</span>
 
-  <button
-    onClick={handleTestPNG}
-    className="border-2 border-blue-500 text-blue-600 bg-white hover:bg-blue-50 font-bold py-3 rounded-xl transition"
-  >
-    🖼 PNG
+      <div className="text-left">
+        <div className="font-bold text-green-600 text-lg">
+          CHIA SẺ KẾT QUẢ
+        </div>
+
+        <div className="text-sm text-gray-500">
+          Chia sẻ qua Zalo, Facebook...
+        </div>
+      </div>
+    </div>
   </button>
 
 </div>
-</div>
 
+)}
           <div
   ref={resultRef}
   className="mt-4 bg-slate-50 rounded-xl p-4"
@@ -902,16 +906,16 @@ const handleTestPNG = async () => {
     />
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
-      <h2 className="font-bold text-[#177D96] text-xl md:text-2xl">
+      <h2 className="font-bold text-xl md:text-2xl text-[#177D96]">
         APP DỰ TÍNH THUẾ TNCN 2026
       </h2>
 
       <p className="text-base italic text-slate-600 mt-1">
-        📅 Ngày xuất: {new Date().toLocaleString("vi-VN")}
-      </p>
+  📅 Ngày xuất: --
+</p>
 
       <p className="text-base italic text-slate-600">
-        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932-171-685
+        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932 171 685
       </p>
     </div>
 
@@ -1005,18 +1009,18 @@ const handleTestPNG = async () => {
  <div className="bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
 
   <div className="flex justify-between items-center">
-    <span className="font-medium">
+    <span className="font-medium text-green-700">
       🟢 Tổng giảm trừ
     </span>
 
-    <span className="font-semibold">
+    <span className="font-semibold text-green-700">
       {formatMoney(result.deduction)}
     </span>
   </div>
 
   <div className="mt-2 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-ml text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>↳ Bảo hiểm bắt buộc</span>
 
       <span className="md:text-right">
@@ -1024,7 +1028,7 @@ const handleTestPNG = async () => {
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-ml text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>
         ↳ Giảm trừ bản thân & người phụ thuộc
       </span>
