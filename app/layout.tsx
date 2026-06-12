@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DỰ TÍNH THUẾ TNCN 2026",
+  title: "AffTax 2026",
   description:
     "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
-  
+
   openGraph: {
     title: "DỰ TÍNH THUẾ TNCN 2026",
     description:
