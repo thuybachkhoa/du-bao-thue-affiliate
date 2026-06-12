@@ -318,19 +318,43 @@ const pdfHeight =
   (imgProps.height * pdfWidth) /
   imgProps.width;
 
+const pageHeight =
+  pdf.internal.pageSize.getHeight();
+
+let heightLeft = pdfHeight;
+let position = 0;
+
 pdf.addImage(
   dataUrl,
   "PNG",
   0,
-  10,
+  position,
   pdfWidth,
   pdfHeight
 );
 
+heightLeft -= pageHeight;
+
+while (heightLeft > 0) {
+  position = heightLeft - pdfHeight;
+
+  pdf.addPage();
+
+  pdf.addImage(
+    dataUrl,
+    "PNG",
+    0,
+    position,
+    pdfWidth,
+    pdfHeight
+  );
+
+  heightLeft -= pageHeight;
+}
 const today = new Date()
   .toLocaleDateString("vi-VN")
   .replace(/\//g, "-");
-
+  
 pdf.save(`thue-tncn-${today}.pdf`);
   } catch (error) {
     console.error(error);

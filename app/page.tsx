@@ -4,7 +4,7 @@
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
 import html2canvas from "html2canvas";
-  import Image from "next/image";
+import Image from "next/image";
 
   export default function Home() {
     const [salary, setSalary] = useState("");
@@ -354,7 +354,7 @@ while (heightLeft > 0) {
 const today = new Date()
   .toLocaleDateString("vi-VN")
   .replace(/\//g, "-");
-  
+
 pdf.save(`thue-tncn-${today}.pdf`);
   } catch (error) {
     console.error(error);
@@ -924,8 +924,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
     <Image
       src="/icon.png"
       alt="App Icon"
-      width={72}
-      height={72}
+      width="72"
+      height="72"
       className="shrink-0"
     />
 
@@ -962,8 +962,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
     <Image
       src="/wallet-green.png"
       alt="Hoàn thuế"
-      width={80}
-      height={80}
+      width="80"
+      height="80"
       className="shrink-0"
     />
 
@@ -992,8 +992,8 @@ pdf.save(`thue-tncn-${today}.pdf`);
     <Image
       src="/wallet-red.png"
       alt="Nộp thêm"
-      width={80}
-      height={80}
+      width="80"
+      height="80"
       className="shrink-0"
     />
 
