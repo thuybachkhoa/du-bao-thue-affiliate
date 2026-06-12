@@ -21,11 +21,11 @@ import Image from "next/image";
 
     const [dependents, setDependents] = useState("0");
 const [insuranceMode, setInsuranceMode] =
-  useState("auto");
+  useState("");
 
 const [insuranceAmount, setInsuranceAmount] =
   useState("");
-    const [knowSalaryTax, setKnowSalaryTax] = useState("no");
+    const [knowSalaryTax, setKnowSalaryTax] = useState("");
     const [salaryTax, setSalaryTax] = useState("");
 
     const [result, setResult] = useState({
@@ -227,9 +227,9 @@ setResult({
     setOtherTax("");
 
     setDependents("0");
-setInsuranceMode("auto");
+setInsuranceMode("");
 setInsuranceAmount("");
-    setKnowSalaryTax("no");
+    setKnowSalaryTax("");
     setSalaryTax("");
 
     setResult({
@@ -408,11 +408,11 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
   <div>
   <h2 className="font-bold text-xl">
-    1️⃣ THU NHẬP TỪ LƯƠNG (THEO HĐLĐ)
+    1️⃣ THU NHẬP TỪ LƯƠNG (THỰC NHẬN)
   </h2>
 
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
-        Lũy kế từ đầu năm
+        Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ...
   </p>
 </div>
 
@@ -427,7 +427,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
       )
     }
     placeholder="Nhập số lương"
-    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:italic placeholder:font-normal placeholder:text-amber-400"
+    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:italic placeholder:font-normal placeholder:text-amber-700"
   />
 
   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-700 font-bold text-lg">
@@ -445,6 +445,10 @@ pdf.save(`thue-tncn-${today}.pdf`);
     👫 Người phụ thuộc
   </label>
 
+<p className="text-sm text-[#177D96] text-center italic mb-3">
+    Gồm con, cha mẹ, vợ chồng... đã đăng ký với BHXH
+  </p>
+
   <div className="flex justify-center">
     <select
       value={dependents}
@@ -460,97 +464,142 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </div>
 </div>
 
-  {/* Bảo hiểm */}
-  <div className="flex flex-col items-center">
-    <label className="font-semibold text-base block mb-2">
-      🛡️ Bảo hiểm bắt buộc
-    </label>
+{/* Bảo hiểm */}
+<div className="flex flex-col">
 
-    <div className="flex items-center gap-3 mb-3">
-      <label className="flex items-center gap-1 text-ml">
-        <input
-          type="radio"
-          value="auto"
-          checked={insuranceMode === "auto"}
-          onChange={(e) =>
-            setInsuranceMode(e.target.value)
-          }
-        />
-        Theo HĐLĐ
-      </label>
+  <div className="flex items-center gap-2 mb-2">
+    <span>🛡️</span>
+    <span className="font-semibold text-base">
+      Bảo hiểm bắt buộc
+    </span>
+  </div>
 
-      <label className="flex items-center gap-1 text-ml">
-        <input
-          type="radio"
-          value="manual"
-          checked={insuranceMode === "manual"}
-          onChange={(e) =>
-            setInsuranceMode(e.target.value)
-          }
-        />
-        Nhập tay
-      </label>
-    </div>
+  <p className="text-sm text-[#177D96] italic mb-3">
+    Bạn biết lương đóng BHXH?
+  </p>
 
-    {insuranceMode === "manual" && (
-      <input
-        type="text"
-        value={insuranceAmount}
-        onChange={(e) =>
-          setInsuranceAmount(
-            formatInputNumber(e.target.value)
-          )
-        }
-        placeholder="Nhập số tiền"
-        className="w-40 border rounded-lg px-3 py-2 text-right"
-      />
-    )}
+  <div className="grid grid-cols-2 gap-2 mb-3">
+
+    <button
+      type="button"
+      onClick={() => setInsuranceMode("manual")}
+      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
+        insuranceMode === "manual"
+          ? "border-[#177D96] bg-[#177D96]/10 text-[#177D96]"
+          : "border-[#177D96] bg-white"
+      }`}
+    >
+      ✓ Có
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setInsuranceMode("auto")}
+      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
+        insuranceMode === "auto"
+          ? "border-[#177D96] bg-[#177D96]/10 text-[#EF4444]"
+          : "border-[#177D96] bg-white"
+      }`}
+    >
+      ✕ Không
+    </button>
 
   </div>
 
-  <div className="flex flex-col items-center">
-    <label className="font-semibold text-base block mb-2">
-      💰 Thuế đã khấu trừ
-    </label>
+  {insuranceMode === "manual" && (
+    <>
+            <div className="relative">
 
-    <div className="flex items-center gap-6 mb-3">
-      <label className="flex items-center gap-2">
         <input
-          type="radio"
-          value="yes"
-          checked={knowSalaryTax === "yes"}
-          onChange={(e) => setKnowSalaryTax(e.target.value)}
+          type="text"
+          value={insuranceAmount}
+          onChange={(e) =>
+            setInsuranceAmount(
+              formatInputNumber(e.target.value)
+            )
+          }
+          placeholder="Tổng lương từ đầu năm"
+          className="w-full border rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
         />
-        Có
-      </label>
-
-      <label className="flex items-center gap-2">
-        <input
-          type="radio"
-          value="no"
-          checked={knowSalaryTax === "no"}
-          onChange={(e) => setKnowSalaryTax(e.target.value)}
-        />
-        Không
-      </label>
-    </div>
-
-    {knowSalaryTax === "yes" && (
-      <input
-        type="text"
-        value={salaryTax}
-        onChange={(e) =>
-          setSalaryTax(
-            formatInputNumber(e.target.value)
-          )
-        }
-        placeholder="Nhập số tiền"
-        className="w-40 border rounded-lg px-3 py-2 text-right bg-white"
-      />
-    )}
+      </div>
+      </>
+  )}
+{insuranceMode === "auto" && (
+  <div className="mt-1 text-sm text-amber-700 italic text-center">
+    ⚠️ Ước tính theo lương, thuế chỉ mang tính tham khảo
   </div>
-
+)}
 </div>
+
+  <div className="flex flex-col">
+
+  <div className="flex items-center gap-2 mb-2">
+    <span>💰</span>
+    <span className="font-semibold text-base">
+      Thuế đã khấu trừ
+    </span>
+  </div>
+
+  <p className="text-sm text-[#177D96] italic mb-3">
+    Tại công ty từ đầu năm
+  </p>
+
+  <div className="grid grid-cols-2 gap-2 mb-3">
+
+    <button
+      type="button"
+      onClick={() => setKnowSalaryTax("yes")}
+      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
+        knowSalaryTax === "yes"
+          ? "border-[#177D96] bg-[#177D96]/10 text-[#177D96]"
+          : "border-[#177D96] bg-white"
+      }`}
+    >
+      ✓ Có
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setKnowSalaryTax("no")}
+      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
+        knowSalaryTax === "no"
+          ? "border-[#177D96] bg-[#177D96]/10 text-[#EF4444]"
+          : "border-[#177D96] bg-white"
+      }`}
+    >
+      ✕ Không
+    </button>
+
+  </div>
+
+  {knowSalaryTax === "yes" && (
+    <input
+      type="text"
+      value={salaryTax}
+      onChange={(e) =>
+        setSalaryTax(
+          formatInputNumber(e.target.value)
+        )
+      }
+      placeholder="Nhập số thuế chính xác"
+      className="w-full border rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
+    />
+  )}
+ </div>
+</div>
+{insuranceMode === "" && knowSalaryTax === "" && (
+  <div className="grid md:grid-cols-3 gap-8 -mt-2">
+    <div></div>
+
+    <div className="md:col-span-2">
+      <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1">
+        <p className="text-sm text-amber-700 italic text-center">
+          ⚠️ Lựa chọn này ảnh hưởng trực tiếp đến kết quả thuế
+        </p>
+      </div>
+    </div>
+  </div>
+)}
   </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
@@ -1091,7 +1140,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 <hr className="my-3 border-slate-300" />
 
               <div className="flex justify-between items-center bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">
-  <span className="font-medium text-orange-700">
+  <span className="font-bold text-orange-700">
     📊 Thu nhập tính thuế
   </span>
 
@@ -1100,18 +1149,18 @@ pdf.save(`thue-tncn-${today}.pdf`);
   </span>
 </div>
 
-              <div className="flex justify-between items-center bg-red-50 rounded-lg px-4 py-3 mb-2 border border-red-200 shadow-sm">
-  <span className="font-medium text-red-600">
+              <div className="flex justify-between items-center bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
+  <span className="font-bold text-[#177D96]">
     🏛️ Tổng thuế phải nộp
   </span>
 
-  <span className="font-bold text-red-600">
+  <span className="font-bold text-[#177D96]">
     {formatMoney(result.taxPayable)}
   </span>
 </div>
 
               <div className="flex justify-between items-center bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
-  <span className="font-medium text-purple-700">
+  <span className="font-bold text-purple-700">
     ✅ Tổng thuế đã khấu trừ
   </span>
 
