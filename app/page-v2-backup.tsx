@@ -915,7 +915,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </p>
 
       <p className="text-base italic text-slate-600">
-        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932 171 685
+        👤 Phát triển bởi Thủy Bách Khoa | Zalo 0932-171-685
       </p>
     </div>
 
