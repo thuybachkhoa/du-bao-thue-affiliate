@@ -2,7 +2,7 @@
 
   import { useState, useRef } from "react";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
   import Image from "next/image";
 
   export default function Home() {
@@ -294,49 +294,60 @@ if (navigator.share && isMobile) {
   if (!resultRef.current) return;
 
   try {
-    await new Promise(resolve =>
-  setTimeout(resolve, 500)
-);
-    const canvas = await html2canvas(
-  resultRef.current,
-  {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    scrollY: -window.scrollY,
+    const dataUrl = await toPng(
+      resultRef.current,
+      {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+      }
+    );
+
+    const pdf = new jsPDF();
+
+    const imgProps =
+      pdf.getImageProperties(dataUrl);
+
+    const pdfWidth =
+      pdf.internal.pageSize.getWidth();
+
+    const pdfHeight =
+      (imgProps.height * pdfWidth) /
+      imgProps.width;
+
+    pdf.addImage(
+      dataUrl,
+      "PNG",
+      0,
+      0,
+      pdfWidth,
+      pdfHeight
+    );
+
+    const today = new Date()
+      .toLocaleDateString("vi-VN")
+      .replace(/\//g, "-");
+
+    pdf.save(`thue-tncn-${today}.pdf`);
+  } catch (error) {
+    console.error(error);
+    alert(String(error));
   }
-);
+};
+const handleTestPNG = async () => {
+  if (!resultRef.current) return;
 
-const dataUrl =
-  canvas.toDataURL("image/png");
+  try {
+    const dataUrl = await toPng(
+      resultRef.current,
+      {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+      }
+    );
 
-  const pdf = new jsPDF();
-
-const imgProps =
-  pdf.getImageProperties(dataUrl);
-
-const pdfWidth =
-  pdf.internal.pageSize.getWidth();
-
-const pdfHeight =
-  (imgProps.height * pdfWidth) /
-  imgProps.width;
-  console.log("PDF HEIGHT =", pdfHeight);
-
-pdf.addImage(
-  dataUrl,
-  "PNG",
-  0,
-  10,
-  pdfWidth,
-  pdfHeight
-);
-
-const today = new Date()
-  .toLocaleDateString("vi-VN")
-  .replace(/\//g, "-");
-
-pdf.save(`thue-tncn-${today}.pdf`);
+    window.open(dataUrl, "_blank");
   } catch (error) {
     console.error(error);
     alert(String(error));
@@ -848,8 +859,31 @@ pdf.save(`thue-tncn-${today}.pdf`);
       </button>
 
     </div>
-  )}
+      )}
+<div className="grid grid-cols-3 gap-3">
 
+  <button
+    onClick={handleExportPDF}
+    className="border-2 border-red-500 text-red-600 bg-white hover:bg-red-50 font-bold py-3 rounded-xl transition"
+  >
+    📄 PDF
+  </button>
+
+  <button
+    onClick={handleShare}
+    className="border-2 border-green-500 text-green-600 bg-white hover:bg-green-50 font-bold py-3 rounded-xl transition"
+  >
+    📱 SHARE
+  </button>
+
+  <button
+    onClick={handleTestPNG}
+    className="border-2 border-blue-500 text-blue-600 bg-white hover:bg-blue-50 font-bold py-3 rounded-xl transition"
+  >
+    🖼 PNG
+  </button>
+
+</div>
 </div>
 
           <div
