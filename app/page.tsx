@@ -296,7 +296,7 @@ if (navigator.share && isMobile) {
 
   try {
     await new Promise(resolve =>
-  setTimeout(resolve, 500)
+  setTimeout(resolve, 1500)
 );
     const dataUrl = await toPng(
   resultRef.current,
