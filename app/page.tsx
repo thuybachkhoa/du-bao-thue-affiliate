@@ -295,19 +295,8 @@ if (navigator.share && isMobile) {
   if (!resultRef.current) return;
 
   try {
-    const images = Array.from(
-  resultRef.current.querySelectorAll("img")
-);
-
-await Promise.all(
-  images.map((img) => {
-    if (img.complete) return Promise.resolve();
-
-    return new Promise((resolve) => {
-      img.onload = resolve;
-      img.onerror = resolve;
-    });
-  })
+    await new Promise(resolve =>
+  setTimeout(resolve, 1500)
 );
     const dataUrl = await toPng(
   resultRef.current,
@@ -347,7 +336,7 @@ pdf.addImage(
 heightLeft -= pageHeight;
 
 while (heightLeft > 0) {
-  position = heightLeft - pdfHeight + 8;
+  position = heightLeft - pdfHeight;
 
   pdf.addPage();
 
@@ -933,12 +922,11 @@ pdf.save(`thue-tncn-${today}.pdf`);
   <div className="flex flex-col md:flex-row items-center gap-4">
 
     <img
-  src="/icon.png?v=2"
+  src="/icon.png"
   alt="App Icon"
   width={72}
   height={72}
   className="shrink-0"
-  loading="eager"
 />
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
