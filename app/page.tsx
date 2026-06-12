@@ -295,8 +295,19 @@ if (navigator.share && isMobile) {
   if (!resultRef.current) return;
 
   try {
-    await new Promise(resolve =>
-  setTimeout(resolve, 1500)
+    const images = Array.from(
+  resultRef.current.querySelectorAll("img")
+);
+
+await Promise.all(
+  images.map((img) => {
+    if (img.complete) return Promise.resolve();
+
+    return new Promise((resolve) => {
+      img.onload = resolve;
+      img.onerror = resolve;
+    });
+  })
 );
     const dataUrl = await toPng(
   resultRef.current,
@@ -922,7 +933,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
   <div className="flex flex-col md:flex-row items-center gap-4">
 
     <img
-  src="/icon.png?v=1"
+  src="/icon.png?v=2"
   alt="App Icon"
   width={72}
   height={72}
