@@ -165,7 +165,7 @@ const resultRef = useRef<HTMLDivElement>(null);
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
   insuranceMode === "manual"
-    ? parseNumber(insuranceAmount)
+    ? Math.min(parseNumber(insuranceAmount), 561600000) * 0.105
     : Math.min(salaryIncome, 561600000) * 0.105;
       const affiliateIncome =
     parseNumber(shopeeIncome) +
@@ -518,7 +518,7 @@ pdf.save(`thue-tncn-${today}.pdf`);
               formatInputNumber(e.target.value)
             )
           }
-          placeholder="Tổng lương từ đầu năm"
+          placeholder="Tổng lương BHXH năm nay"
           className="w-full border rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
         />
       </div>
