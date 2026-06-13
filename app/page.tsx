@@ -250,6 +250,9 @@ setResult({
 
   setShowZaloPopup(false);
   setShowZaloBanner(true);
+   window.gtag?.("event", "calculate_tax", {
+    tax_year: taxYear,
+  });
   handleCalculate();
 };
 
@@ -266,6 +269,9 @@ const handleJoinZalo = () => {
 
   setShowZaloPopup(false);
   setShowZaloBanner(true);
+  window.gtag?.("event", "calculate_tax", {
+  tax_year: taxYear,
+});
   handleCalculate();
 };
   const handleReset = () => {
@@ -474,6 +480,10 @@ if (webBanner)
         "zalo-popup"
       );
 if (popupSeen) {
+  window.gtag?.("event", "calculate_tax", {
+    tax_year: taxYear,
+  });
+
   handleCalculate();
   setShowZaloBanner(true);
   return;
