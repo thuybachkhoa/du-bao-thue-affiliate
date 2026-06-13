@@ -1307,12 +1307,12 @@ chọn ✕ Không để hệ thống ước tính
   )}
             <div className="space-y-3 text-base">
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
-  <span className="font-medium">
+  <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
+  <span className="font-medium flex-1">
     💰 Tổng thu nhập
   </span>
 
-  <span className="font-semibold">
+  <span className="font-semibold text-right shrink-0">
     {formatMoney(result.totalIncome)}
   </span>
 </div>
@@ -1322,14 +1322,14 @@ chọn ✕ Không để hệ thống ước tính
   <button
   type="button"
   onClick={() => setShowDeductionDetail(!showDeductionDetail)}
-  className="w-full flex flex-col md:flex-row md:justify-between md:items-center gap-2"
+  className="w-full flex justify-between items-start gap-3"
 >
-    <span className="font-medium">
+    <span className="font-medium flex-1">
       🟢 Tổng giảm trừ
     </span>
 
      <div className="flex items-center gap-2">
-  <span className="font-semibold">
+  <span className="font-semibold text-right shrink-0">
     {formatMoney(result.deduction)}
   </span>
 
@@ -1341,15 +1341,15 @@ chọn ✕ Không để hệ thống ước tính
 {showDeductionDetail && (
   <div className="mt-2 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
       <span>1️⃣ Bảo hiểm xã hội</span>
 
-      <span className="md:text-right">
+      <span className="text-right shrink-0">
   {formatMoney(result.insuranceDeduction)}
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
       <span>
         2️⃣  Giảm trừ gia cảnh
       </span>
@@ -1363,32 +1363,32 @@ chọn ✕ Không để hệ thống ước tính
 </div>
 <hr className="my-3 border-slate-300" />
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">
-  <span className="font-bold text-orange-700 md:text-right">
+<div className="flex justify-between items-start gap-3 bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">              
+  <span className="font-bold text-orange-700 flex-1">
     📊 Thu nhập tính thuế
   </span>
 
-  <span className="font-bold text-orange-700 md:text-right">
+  <span className="font-bold text-orange-700 text-right shrink-0">
     {formatMoney(result.taxableIncome)}
   </span>
 </div>
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
-  <span className="font-bold text-[#177D96] md:text-right">
+  <div className="flex justify-between items-start gap-3 bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
+  <span className="font-bold text-[#177D96] flex-1">
     🏛️ Tổng thuế phải nộp
   </span>
 
-  <span className="font-bold text-[#177D96] md:text-right">
+  <span className="font-bold text-[#177D96] text-right shrink-0">
     {formatMoney(result.taxPayable)}
   </span>
 </div>
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
-  <span className="font-bold text-purple-700 md:text-right">
+  <div className="flex justify-between items-start gap-3 bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
+  <span className="font-bold text-purple-700 flex-1">
     ✅ Tổng thuế đã khấu trừ
   </span>
 
-  <span className="font-bold text-purple-700 md:text-right">
+  <span className="font-bold text-purple-700 text-right shrink-0">
     {formatMoney(result.taxPaid)}
   </span>
 </div>
