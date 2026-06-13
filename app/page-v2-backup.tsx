@@ -1,5 +1,13 @@
  "use client";
-
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      eventName: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+}
   import { useState, useRef } from "react";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
@@ -250,6 +258,9 @@ setResult({
 
   setShowZaloPopup(false);
   setShowZaloBanner(true);
+   window.gtag?.("event", "calculate_tax", {
+    tax_year: taxYear,
+  });
   handleCalculate();
 };
 
@@ -266,6 +277,9 @@ const handleJoinZalo = () => {
 
   setShowZaloPopup(false);
   setShowZaloBanner(true);
+  window.gtag?.("event", "calculate_tax", {
+  tax_year: taxYear,
+});
   handleCalculate();
 };
   const handleReset = () => {
@@ -474,6 +488,10 @@ if (webBanner)
         "zalo-popup"
       );
 if (popupSeen) {
+  window.gtag?.("event", "calculate_tax", {
+    tax_year: taxYear,
+  });
+
   handleCalculate();
   setShowZaloBanner(true);
   return;
