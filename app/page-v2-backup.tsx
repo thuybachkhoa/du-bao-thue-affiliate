@@ -20,6 +20,7 @@ import Image from "next/image";
     const [otherTax, setOtherTax] = useState("");
 
     const [dependents, setDependents] = useState("0");
+    const [taxYear, setTaxYear] = useState("2026"); 
 const [insuranceMode, setInsuranceMode] =
   useState("");
 
@@ -27,7 +28,8 @@ const [insuranceAmount, setInsuranceAmount] =
   useState("");
     const [knowSalaryTax, setKnowSalaryTax] = useState("");
     const [salaryTax, setSalaryTax] = useState("");
-
+const [showZaloPopup, setShowZaloPopup] =
+  useState(false);
     const [result, setResult] = useState({
   totalIncome: 0,
   deduction: 0,
@@ -42,7 +44,9 @@ const resultRef = useRef<HTMLDivElement>(null);
     const formatMoney = (value?: number) => {
   return (value ?? 0).toLocaleString("vi-VN") + " VNĐ";
 };
-    const numberToVietnameseWords = (num: number): string => {
+  
+const numberToVietnameseWords = (num: number): string => {
+      num = Math.round(num);
   if (num === 0) return "Không đồng";
 
   const units = [
@@ -133,18 +137,32 @@ const resultRef = useRef<HTMLDivElement>(null);
   const parseNumber = (value: string) => {
     return Number(value.replace(/\./g, "")) || 0;
   };
-    const calculateTax = (income: number) => {
+    const calculateTax = (
+  income: number,
+  year: string
+) => {
       let tax = 0;
 
       if (income <= 0) return 0;
 
-    const levels = [
-    { limit: 120000000, rate: 0.05 },
-    { limit: 360000000, rate: 0.10 },
-    { limit: 720000000, rate: 0.20 },
-    { limit: 1200000000, rate: 0.30 },
-    { limit: Infinity, rate: 0.35 },
-  ];
+    const levels =
+  year === "2026"
+    ? [
+        { limit: 120000000, rate: 0.05 },
+        { limit: 360000000, rate: 0.10 },
+        { limit: 720000000, rate: 0.20 },
+        { limit: 1200000000, rate: 0.30 },
+        { limit: Infinity, rate: 0.35 },
+      ]
+    : [
+        { limit: 60000000, rate: 0.05 },
+        { limit: 120000000, rate: 0.10 },
+        { limit: 216000000, rate: 0.15 },
+        { limit: 384000000, rate: 0.20 },
+        { limit: 624000000, rate: 0.25 },
+        { limit: 960000000, rate: 0.30 },
+        { limit: Infinity, rate: 0.35 },
+      ];
 
       let previous = 0;
 
@@ -176,8 +194,11 @@ const insuranceDeduction =
       const totalIncome = salaryIncome + affiliateIncome;
 
       const personalDeduction =
-  186000000 +
-  Number(dependents) * 74400000;
+  taxYear === "2026"
+    ? 186000000 +
+      Number(dependents) * 74400000
+    : 132000000 +
+      Number(dependents) * 52800000;
 
 const deduction =
   personalDeduction +
@@ -188,7 +209,12 @@ const deduction =
         totalIncome - deduction
       );
 
-      const taxPayable = calculateTax(taxableIncome);
+  const taxPayable = Math.round(
+  calculateTax(
+    taxableIncome,
+    taxYear
+  )
+);
 
       const taxPaid =
     parseNumber(shopeeTax) +
@@ -199,8 +225,9 @@ const deduction =
           ? parseNumber(salaryTax)
           : 0);
 
-      const refundOrPayMore =
-        taxPaid - taxPayable;
+      const refundOrPayMore = Math.round(
+  taxPaid - taxPayable
+);
 
 setResult({
   totalIncome,
@@ -213,6 +240,32 @@ setResult({
   refundOrPayMore,
 });
     };
+    const handleContinueToResult = () => {
+  localStorage.setItem(
+    "zalo-popup",
+    "true"
+  );
+
+  setShowZaloPopup(false);
+
+  handleCalculate();
+};
+
+const handleJoinZalo = () => {
+  localStorage.setItem(
+    "zalo-popup",
+    "true"
+  );
+
+  window.open(
+    "https://zalo.me/g/zsmp0htnkspnutapjjyt",
+    "_blank"
+  );
+
+  setShowZaloPopup(false);
+
+  handleCalculate();
+};
   const handleReset = () => {
     setSalary("");
 
@@ -244,8 +297,13 @@ setInsuranceAmount("");
 });
   };
   const handleShare = async () => {
-  const shareText = `
-📊 KẾT QUẢ DỰ TÍNH THUẾ TNCN 2026
+  const appTitle =
+  taxYear === "2025"
+    ? "KẾT QUẢ QUYẾT TOÁN THUẾ TNCN 2025"
+    : "KẾT QUẢ DỰ TÍNH THUẾ TNCN 2026";
+
+const shareText = `
+📊 ${appTitle}
 
 💰 Tổng thu nhập: ${result.totalIncome.toLocaleString("vi-VN")} VNĐ
 📈 Thu nhập tính thuế: ${result.taxableIncome.toLocaleString("vi-VN")} VNĐ
@@ -255,9 +313,7 @@ setInsuranceAmount("");
 ${
   result.refundOrPayMore >= 0
     ? `🎉 Dự kiến được hoàn: ${result.refundOrPayMore.toLocaleString("vi-VN")} VNĐ`
-    : `⚠️ Dự kiến phải nộp thêm: ${Math.abs(
-        result.refundOrPayMore
-      ).toLocaleString("vi-VN")} VNĐ`
+    : `⚠️ Dự kiến phải nộp thêm: ${Math.abs(result.refundOrPayMore).toLocaleString("vi-VN")} VNĐ`
 }
 
 🔗 https://du-tinh-tncn-2026.vercel.app
@@ -382,17 +438,52 @@ pdf.save(`thue-tncn-${today}.pdf`);
         <form
   onSubmit={(e) => {
     e.preventDefault();
-    handleCalculate();
+
+    const popupSeen =
+      localStorage.getItem(
+        "zalo-popup"
+      );
+
+    setShowZaloPopup(true);
   }}
->  
+>
 
-          <h1 className="text-5xl font-bold text-center text-[#177D96]">
-            DỰ TÍNH THUẾ 2026
-          </h1>
+ <h1 className="text-5xl font-bold text-center text-[#177D96]">
+  {taxYear === "2025"
+    ? "QUYẾT TOÁN THUẾ 2025"
+    : "DỰ TÍNH THUẾ 2026"}
+</h1>
+<div className="flex justify-center mt-3 mb-4">
+  <div className="flex items-center gap-3">
+    <span className="text-base font-semibold text-slate-800 font-medium">
+      Năm tính thuế
+    </span>
 
-            <p className="text-center text-green-600 text-base mt-1">
-    Áp dụng biểu thuế TNCN 5 bậc năm 2026
-  </p>
+    <select
+      value={taxYear}
+      onChange={(e) => setTaxYear(e.target.value)}
+      className="
+        rounded-xl
+        border
+        border-[#177D96] bg-white
+        px-4
+        py-2
+        text-[#C26A1B]
+        font-semibold
+        bg-white
+        shadow-sm
+      "
+    >
+      <option value="2026">2026</option>
+      <option value="2025">2025</option>
+    </select>
+  </div>
+</div>
+    <p className="text-center text-green-600 text-base mt-1">
+  {taxYear === "2026"
+    ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
+    : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
+</p>
 
           <div className="flex items-center gap-2 mt-4 mb-3">
     <span className="text-xl">📊</span>
@@ -525,8 +616,16 @@ pdf.save(`thue-tncn-${today}.pdf`);
       </>
   )}
 {insuranceMode === "auto" && (
-  <div className="mt-1 text-sm text-amber-700 italic text-center">
-    ⚠️ Ước tính theo lương, thuế chỉ mang tính tham khảo
+  <div className="mt-1 text-xs text-green-600 italic text-center">
+    ⚠️ Không tham gia BHXH: 
+    <br />
+    chọn ✓ Có và nhập 0.
+    <br />
+<div className="mt-1 text-xs text-amber-700 italic text-center">
+Không biết lương đóng BHXH: 
+<br />
+chọn ✕ Không để hệ thống ước tính
+  </div>
   </div>
 )}
 </div>
@@ -1003,8 +1102,10 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
     <div className="border-t-2 md:border-t-0 md:border-l-2 border-orange-400 pt-4 md:pt-0 md:pl-4 w-full text-center md:text-left">
       <h2 className="font-bold text-xl md:text-2xl text-[#177D96]">
-        APP DỰ TÍNH THUẾ TNCN 2026
-      </h2>
+  {taxYear === "2025"
+    ? "APP QUYẾT TOÁN THUẾ TNCN 2025"
+    : "APP DỰ TÍNH THUẾ TNCN 2026"}
+</h2>
 
       <p className="text-base italic text-slate-600 mt-1">
   📅 Ngày xuất: {new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}
@@ -1019,12 +1120,16 @@ pdf.save(`thue-tncn-${today}.pdf`);
 </div>
             <div className="text-left mb-4">
     <h2 className="font-bold text-2xl text-[#C26A1B]">
-      📋  KẾT QUẢ DỰ TÍNH QUYẾT TOÁN THUẾ
-    </h2>
+  📋 {taxYear === "2025"
+      ? "KẾT QUẢ QUYẾT TOÁN THUẾ"
+      : "KẾT QUẢ DỰ TÍNH THUẾ"}
+</h2>
 
     <p className="text-[#177D96] text-base italic mt-1">
-      🛡️ Kết quả dự tính chỉ mang tính tham khảo, không phải căn cứ quyết toán thuế.
-    </p>
+  {taxYear === "2025"
+    ? "🛡️ Kết quả quyết toán chỉ mang tính tham khảo."
+    : "🛡️ Kết quả dự tính chỉ mang tính tham khảo, không phải căn cứ quyết toán thuế."}
+</p>
   </div>
 
   {result.refundOrPayMore >= 0 ? (
@@ -1041,7 +1146,9 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
     <div>
       <div className="text-green-600 text-base font-semibold uppercase">
-        DỰ KIẾN ĐƯỢC HOÀN THUẾ
+        {taxYear === "2025"
+  ? "ĐƯỢC HOÀN THUẾ"
+  : "DỰ KIẾN ĐƯỢC HOÀN THUẾ"}
       </div>
 
       <div className="text-2xl md:text-4xl font-bold text-green-600 break-all">
@@ -1051,8 +1158,10 @@ pdf.save(`thue-tncn-${today}.pdf`);
     VNĐ
   </span>
       </div>
-      <div className="text-sm italic text-gray-500 mt-1">
-    ({numberToVietnameseWords(result.refundOrPayMore)})
+      <div className="text-sm italic text-green-600 mt-1">
+    ({numberToVietnameseWords(
+  Math.round(result.refundOrPayMore)
+)})
   </div>
     </div>
   </div>
@@ -1071,16 +1180,21 @@ pdf.save(`thue-tncn-${today}.pdf`);
 
     <div>
       <div className="text-red-600 text-base font-semibold uppercase">
-        DỰ KIẾN PHẢI NỘP THÊM
+        {taxYear === "2025"
+  ? "PHẢI NỘP THÊM"
+  : "DỰ KIẾN PHẢI NỘP THÊM"}
       </div>
 
       <div className="text-2xl md:text-4xl font-bold text-red-600 break-all">
-        {formatMoney(Math.abs(result.refundOrPayMore)).replace(" VNĐ", "")}
+        {formatMoney(
+  Math.abs(result.refundOrPayMore)
+).replace(" VNĐ", "")}
+
       <span className="text-xl font-semibold text-red-600 ml-2">
     VNĐ
   </span>
       </div>
-      <div className="text-sm italic text-gray-500 mt-1">
+      <div className="text-sm italic text-red-600 mt-1">
     ({numberToVietnameseWords(
     Math.abs(result.refundOrPayMore)
   )})
@@ -1174,24 +1288,126 @@ pdf.save(`thue-tncn-${today}.pdf`);
             <div className="mt-5 text-sm text-gray-500 border-t pt-3">
 
               <p>
-                • Giảm trừ bản thân:
-                15.500.000 VNĐ/tháng = 186.000.000 VNĐ/năm.
-              </p>
+  • Giảm trừ bản thân:
+  {taxYear === "2026"
+    ? " 15.500.000 VNĐ/tháng = 186.000.000 VNĐ/năm."
+    : " 11.000.000 VNĐ/tháng = 132.000.000 VNĐ/năm."}
+</p>
 
-              <p>
-                • Giảm trừ người phụ thuộc:
-                6.200.000 VNĐ/tháng/người = 74.400.000 VNĐ/năm/người.
-              </p>
-
+<p>
+  • Giảm trừ người phụ thuộc:
+  {taxYear === "2026"
+    ? " 6.200.000 VNĐ/tháng/người = 74.400.000 VNĐ/năm/người."
+    : " 4.400.000 VNĐ/tháng/người = 52.800.000 VNĐ/năm/người."}
+</p>
+{taxYear === "2026" && (
               <p>
                 • Giả định từ nay đến cuối năm 
                 không phát sinh thêm thu nhập.
               </p>
-
+ )}
             </div>
 
           </div>
 </form>
+
+{showZaloPopup && (
+  <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+
+    <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+
+      <div className="text-center">
+
+        <div className="text-5xl mb-3">
+          🎁
+        </div>
+
+        <h2 className="text-2xl font-bold text-[#177D96]">
+          Cộng đồng Deal & Mã giảm giá
+        </h2>
+
+        <p className="mt-3 text-gray-600">
+          Website được phát triển và duy trì miễn phí.
+        </p>
+
+        <p className="mt-2 text-gray-600">
+          Nếu thấy hữu ích, hãy tham gia cộng đồng Deal &
+          Mã giảm giá để ủng hộ chi phí
+          vận hành website nhé 💖
+        </p>
+
+        <div className="bg-slate-50 rounded-xl p-4 mt-4 text-left space-y-4">
+
+  <div className="flex gap-3">
+    <span className="text-3xl">🔥</span>
+
+    <div>
+      <div className="font-bold text-slate-800">
+        Deal hot mỗi ngày
+      </div>
+
+      <div className="text-sm text-slate-600">
+        Cập nhật deal giá tốt từ Shopee,
+        Lazada, TikTok và nhiều nền tảng khác.
+      </div>
+    </div>
+  </div>
+
+  <div className="flex gap-3">
+    <span className="text-3xl">🎟️</span>
+
+    <div>
+      <div className="font-bold text-slate-800">
+        Mã giảm giá mới nhất
+      </div>
+
+      <div className="text-sm text-slate-600">
+        Mã giảm giá độc quyền, giúp bạn
+        tiết kiệm chi phí mua sắm.
+      </div>
+    </div>
+  </div>
+
+  <div className="flex gap-3">
+    <span className="text-3xl">💰</span>
+
+    <div>
+      <div className="font-bold text-slate-800">
+        Chia sẻ kinh nghiệm Affiliate
+      </div>
+
+      <div className="text-sm text-slate-600">
+        Kinh nghiệm kiếm tiền, tips tăng
+        thu nhập và nhiều cơ hội hợp tác.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+        <button
+          type="button"
+          onClick={handleJoinZalo}
+          className="w-full mt-5 bg-[#177D96] text-white py-3 rounded-xl font-bold"
+        >
+          Tham gia nhóm Zalo
+        </button>
+
+        <button
+          type="button"
+          onClick={handleContinueToResult}
+          className="w-full mt-3 border border-[#177D96] text-[#177D96] py-2 rounded-xl"
+        >
+          Xem kết quả ngay
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
+
         </div>
         </div>
     );
