@@ -1354,7 +1354,7 @@ chọn ✕ Không để hệ thống ước tính
         2️⃣  Giảm trừ gia cảnh
       </span>
 
-      <span>
+      <span className="text-right shrink-0">
         {formatMoney(result.personalDeduction)}
       </span>
     </div>
