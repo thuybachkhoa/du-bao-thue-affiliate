@@ -30,6 +30,8 @@ const [insuranceAmount, setInsuranceAmount] =
     const [salaryTax, setSalaryTax] = useState("");
 const [showZaloPopup, setShowZaloPopup] =
   useState(false);
+const [showZaloBanner, setShowZaloBanner] =
+  useState(false);  
     const [result, setResult] = useState({
   totalIncome: 0,
   deduction: 0,
@@ -247,7 +249,7 @@ setResult({
   );
 
   setShowZaloPopup(false);
-
+  setShowZaloBanner(true);
   handleCalculate();
 };
 
@@ -263,7 +265,7 @@ const handleJoinZalo = () => {
   );
 
   setShowZaloPopup(false);
-
+  setShowZaloBanner(true);
   handleCalculate();
 };
   const handleReset = () => {
@@ -295,6 +297,7 @@ setInsuranceAmount("");
   taxPaid: 0,
   refundOrPayMore: 0,
 });
+setShowZaloBanner(false);
   };
   const handleShare = async () => {
   const appTitle =
@@ -348,6 +351,17 @@ if (navigator.share && isMobile) {
   }
 };
   const handleExportPDF = async () => {
+    const pdfHeader =
+  document.getElementById("pdf-header");
+
+const webBanner =
+  document.getElementById("web-banner");
+
+if (pdfHeader)
+  pdfHeader.classList.remove("hidden");
+
+if (webBanner)
+  webBanner.classList.add("hidden");
   if (!resultRef.current) return;
 const isMobile =
   /Android|iPhone|iPad|iPod/i.test(
@@ -377,7 +391,11 @@ if (isMobile) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+if (pdfHeader)
+  pdfHeader.classList.add("hidden");
 
+if (webBanner)
+  webBanner.classList.remove("hidden");
   return;
 }
    const pdf = new jsPDF();
@@ -427,10 +445,22 @@ while (heightLeft > 0) {
 }
 
 pdf.save(`thue-tncn-${today}.pdf`);
+if (pdfHeader)
+  pdfHeader.classList.add("hidden");
+
+if (webBanner)
+  webBanner.classList.remove("hidden");
   } catch (error) {
-    console.error(error);
-    alert(String(error));
-  }
+
+  if (pdfHeader)
+    pdfHeader.classList.add("hidden");
+
+  if (webBanner)
+    webBanner.classList.remove("hidden");
+
+  console.error(error);
+  alert(String(error));
+}
 };
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
@@ -443,7 +473,11 @@ pdf.save(`thue-tncn-${today}.pdf`);
       localStorage.getItem(
         "zalo-popup"
       );
-
+if (popupSeen) {
+  handleCalculate();
+  setShowZaloBanner(true);
+  return;
+}
     setShowZaloPopup(true);
   }}
 >
@@ -616,12 +650,12 @@ pdf.save(`thue-tncn-${today}.pdf`);
       </>
   )}
 {insuranceMode === "auto" && (
-  <div className="mt-1 text-xs text-green-600 italic text-center">
+  <div className="mt-1 text-sm text-green-600 italic text-center">
     ⚠️ Không tham gia BHXH: 
     <br />
     chọn ✓ Có và nhập 0.
     <br />
-<div className="mt-1 text-xs text-amber-700 italic text-center">
+<div className="mt-1 text-sm text-amber-700 italic text-center">
 Không biết lương đóng BHXH: 
 <br />
 chọn ✕ Không để hệ thống ước tính
@@ -1089,7 +1123,49 @@ chọn ✕ Không để hệ thống ước tính
   ref={resultRef}
   className="mt-4 bg-slate-50 rounded-xl p-4"
 >
-<div className="bg-white border border-orange-200 rounded-xl p-4 mb-5">
+  {showZaloBanner && (
+  <div
+    id="web-banner"
+    className="border border-pink-100 rounded-xl p-4 mb-5 bg-[#FFF9FB]"
+  >
+    <div className="flex items-center gap-3">
+
+  <img
+  src="/community-icon.png"
+  alt="Cộng đồng Zalo"
+  className="w-26 h-26 rounded-full shrink-0"
+/>
+
+      <div className="flex-1">
+
+        <div className="font-bold text-lg text-[#177D96]">
+          💖 Duy trì công cụ miễn phí
+        </div>
+
+        <div className="text-sm text-slate-600 mt-1">
+          Nhóm Zalo chia sẻ deal, mã giảm giá
+          và cơ hội kiếm thêm thu nhập Affiliate.
+        </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            window.open(
+              "https://zalo.me/g/zsmp0htnkspnutapjjyt",
+              "_blank"
+            )
+          }
+          className="mt-3 bg-[#177D96] text-white px-4 py-2 rounded-lg text-sm"
+        >
+          Tham gia nhóm Zalo →
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
+<div id="pdf-header" className="hidden bg-white border border-orange-200 rounded-xl p-4 mb-5">
   <div className="flex flex-col md:flex-row items-center gap-4">
 
     <img
