@@ -478,7 +478,7 @@ if (webBanner)
 };
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-[1800px] bg-white rounded-2xl shadow-lg scale-90 p-8 origin-top">
+        <div className="w-full max-w-[1800px] bg-white rounded-2xl shadow-lg p-8">
         <form
   onSubmit={(e) => {
     e.preventDefault();
@@ -1322,22 +1322,23 @@ chọn ✕ Không để hệ thống ước tính
   <button
   type="button"
   onClick={() => setShowDeductionDetail(!showDeductionDetail)}
-  className="w-full flex justify-between items-start gap-3"
+  className="w-full flex items-center justify-between"
 >
-    <span className="font-medium flex-1">
-      🟢 Tổng giảm trừ
+  <span className="font-medium text-left">
+    🟢 Tổng giảm trừ
+  </span>
+
+  <div className="flex items-center gap-2 shrink-0">
+    <span className="font-semibold">
+      {formatMoney(result.deduction)}
     </span>
 
-     <div className="flex items-center gap-2">
-  <span className="font-semibold text-right shrink-0">
-    {formatMoney(result.deduction)}
-  </span>
-
-  <span>
-    {showDeductionDetail ? "▲" : "▼"}
-  </span>
-</div>
+    <span>
+      {showDeductionDetail ? "▲" : "▼"}
+    </span>
+  </div>
 </button>
+
 {showDeductionDetail && (
   <div className="mt-2 border-t border-slate-100 pt-2">
 
