@@ -1307,7 +1307,7 @@ chọn ✕ Không để hệ thống ước tính
   )}
             <div className="space-y-3 text-base">
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
   <span className="font-medium">
     💰 Tổng thu nhập
   </span>
@@ -1341,7 +1341,7 @@ chọn ✕ Không để hệ thống ước tính
 {showDeductionDetail && (
   <div className="mt-2 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>1️⃣ Bảo hiểm xã hội</span>
 
       <span className="md:text-right">
@@ -1349,7 +1349,7 @@ chọn ✕ Không để hệ thống ước tính
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-gray-500 italic mt-1 pl-4">
       <span>
         2️⃣  Giảm trừ gia cảnh
       </span>
@@ -1363,7 +1363,7 @@ chọn ✕ Không để hệ thống ước tính
 </div>
 <hr className="my-3 border-slate-300" />
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">
   <span className="font-bold text-orange-700 md:text-right">
     📊 Thu nhập tính thuế
   </span>
@@ -1373,7 +1373,7 @@ chọn ✕ Không để hệ thống ước tính
   </span>
 </div>
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
   <span className="font-bold text-[#177D96] md:text-right">
     🏛️ Tổng thuế phải nộp
   </span>
@@ -1383,7 +1383,7 @@ chọn ✕ Không để hệ thống ước tính
   </span>
 </div>
 
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
   <span className="font-bold text-purple-700 md:text-right">
     ✅ Tổng thuế đã khấu trừ
   </span>
