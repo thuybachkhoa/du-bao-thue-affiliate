@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AffTax 2026",
+  title: "Thuế TNCN",
   description:
-    "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
+    "Công cụ dự tính hoàn thuế và số thuế phải nộp cho cá nhân có thu nhập từ Affiliate theo quy định hiện hành.",
 
      icons: {
     icon: "/icon.png",
@@ -23,17 +23,17 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "DỰ TÍNH THUẾ TNCN 2026",
+    title: "DỰ TÍNH QUYẾT TOÁN THUẾ TNCN",
     description:
-      "Công cụ dự tính hoàn thuế và số thuế phải nộp cho Affiliate theo quy định năm 2026.",
+      "Công cụ dự tính hoàn thuế và số thuế phải nộp cho cá nhân có thu nhập từ Affiliate theo quy định hiện hành.",
     url: "https://du-tinh-tncn-2026.vercel.app",
-    siteName: "DỰ TÍNH THUẾ TNCN 2026",
+    siteName: "DỰ TÍNH QUYẾT TOÁN THUẾ TNCN",
     images: [
       {
         url: "/icon.png",
         width: 512,
         height: 512,
-        alt: "Dự tính Thuế TNCN 2026",
+        alt: "Dự Tính Quyết Toán Thuế TNCN",
       },
     ],
     locale: "vi_VN",
