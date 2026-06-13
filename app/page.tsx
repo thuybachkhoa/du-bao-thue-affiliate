@@ -1307,7 +1307,7 @@ chọn ✕ Không để hệ thống ước tính
   )}
             <div className="space-y-3 text-base">
 
-              flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
   <span className="font-medium">
     💰 Tổng thu nhập
   </span>
