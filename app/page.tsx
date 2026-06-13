@@ -1,5 +1,13 @@
  "use client";
-
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      eventName: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+}
   import { useState, useRef } from "react";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
