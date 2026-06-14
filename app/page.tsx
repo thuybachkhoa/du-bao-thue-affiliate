@@ -1218,7 +1218,7 @@ chọn ✕ Không để hệ thống ước tính
 </div>
 <div
   id="share-header"
-  className="hidden bg-white border border-[#177D96]/20 rounded-xl p-3 mb-4"
+  className="hidden bg-[#FFF9FB] border border-pink-200 rounded-xl p-3 mb-4 shadow-sm"
 >
   <div className="text-center py-1">
 
@@ -1228,11 +1228,12 @@ chọn ✕ Không để hệ thống ước tính
       </div>
 
       <div className="text-xs text-slate-600 mt-1">
-        👤 Phát triển bởi Thủy Bách Khoa • 📱 Zalo: 0932-171-685
-      </div>
+  <div>👤 Phát triển bởi Thủy Bách Khoa</div>
+  <div>📱 Zalo: 0932-171-685</div>
+</div>
 
-      <div className="text-[11px] text-slate-500 mt-0.5">
-        📅 {new Date()
+      <div className="text-xs text-slate-600 mt-1">
+        📅 Ngày xuất file: {new Date()
           .toLocaleDateString("vi-VN")
           .replace(/\//g, "-")}
       </div>
@@ -1257,7 +1258,7 @@ chọn ✕ Không để hệ thống ước tính
   </div>
 
   {result.refundOrPayMore >= 0 ? (
-  <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-5">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-5">
   <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
     <img
@@ -1291,7 +1292,7 @@ chọn ✕ Không để hệ thống ước tính
   </div>
 </div>
   ) : (
-    <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-5">
+    <div className="bg-red-50 border border-red-200 rounded-2xl p-3 mb-5">
   <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
 
     <img
