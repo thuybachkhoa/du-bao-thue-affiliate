@@ -320,6 +320,23 @@ const isMobile =
     navigator.userAgent
   );
   try {
+    const shareHeader =
+  document.getElementById("share-header");
+
+const webBanner =
+  document.getElementById("web-banner");
+
+if (isMobile) {
+  if (shareHeader)
+    shareHeader.classList.remove("hidden");
+
+  if (webBanner)
+    webBanner.classList.add("hidden");
+
+  await new Promise(resolve =>
+    setTimeout(resolve, 500)
+  );
+}
     const dataUrl = await toPng(
       resultRef.current,
       {
@@ -327,7 +344,13 @@ const isMobile =
         backgroundColor: "#ffffff",
       }
     );
+if (isMobile) {
+  if (shareHeader)
+    shareHeader.classList.add("hidden");
 
+  if (webBanner)
+    webBanner.classList.remove("hidden");
+}
     const blob = await (
       await fetch(dataUrl)
     ).blob();
