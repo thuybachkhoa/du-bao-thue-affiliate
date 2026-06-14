@@ -1198,6 +1198,41 @@ chọn ✕ Không để hệ thống ước tính
 
   </div>
 </div>
+<div
+  id="share-header"
+  className="hidden bg-white border border-[#177D96]/20 rounded-xl p-3 mb-4"
+>
+  <div className="flex items-center gap-3">
+
+    <Image
+      src="/icon.png"
+      alt="App Icon"
+      width={48}
+      height={48}
+      unoptimized
+    />
+
+    <div>
+
+      <div className="font-bold text-[#177D96]">
+        APP DỰ TÍNH THUẾ TNCN 2026
+      </div>
+
+      <div className="text-sm text-slate-500">
+        👤 Thủy Bách Khoa • 📱 0932-171-685
+      </div>
+
+      <div className="text-xs text-slate-400">
+        📅 {new Date()
+          .toLocaleDateString("vi-VN")
+          .replace(/\//g, "-")}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
             <div className="text-left mb-4">
     <h2 className="font-bold text-2xl text-[#C26A1B]">
   📋 {taxYear === "2025"
@@ -1384,7 +1419,7 @@ chọn ✕ Không để hệ thống ước tính
   <button
     type="button"
   onClick={handleExportPDF}
-    className="border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
+    className="hidden md:block border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
       <span className="text-xl">📄</span>
