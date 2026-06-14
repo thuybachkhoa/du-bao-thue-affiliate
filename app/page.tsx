@@ -1218,14 +1218,16 @@ chọn ✕ Không để hệ thống ước tính
 </div>
 <div
   id="share-header"
-  className="hidden bg-[#FFF9FB] border border-pink-200 rounded-xl p-3 mb-4 shadow-sm"
+  className="hidden bg-[#FFF9FB] border border-pink-200 rounded-xl p-3 mb-4"
 >
   <div className="text-center py-1">
 
         <div>
       <div className="font-bold text-[#177D96] text-base leading-tight">
-        APP DỰ TÍNH THUẾ TNCN {taxYear}
-      </div>
+  {taxYear === "2025"
+    ? "APP QUYẾT TOÁN THUẾ TNCN 2025"
+    : "APP DỰ TÍNH THUẾ TNCN 2026"}
+</div>
 
       <div className="text-xs text-slate-600 mt-1">
   <div>👤 Phát triển bởi Thủy Bách Khoa</div>
@@ -1252,7 +1254,7 @@ chọn ✕ Không để hệ thống ước tính
 
     <p className="text-[#177D96] text-base italic mt-1">
   {taxYear === "2025"
-    ? "🛡️ Kết quả quyết toán chỉ mang tính tham khảo."
+    ? "🛡️ Kết quả quyết toán chỉ mang tính tham khảo, không phải căn cứ quyết toán thuế."
     : "🛡️ Kết quả dự tính chỉ mang tính tham khảo, không phải căn cứ quyết toán thuế."}
 </p>
   </div>
@@ -1331,7 +1333,7 @@ chọn ✕ Không để hệ thống ước tính
   )}
             <div className="space-y-3 text-base">
 
-  <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
+  <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
   <span className="font-medium flex-1">
     💰 Tổng thu nhập
   </span>
@@ -1341,7 +1343,7 @@ chọn ✕ Không để hệ thống ước tính
   </span>
 </div>
 
- <div className="bg-white rounded-lg px-4 py-3 mb-2 shadow-sm">
+ <div className="bg-white rounded-lg px-4 py-3 mb-2">
 
   <button
   type="button"
@@ -1388,7 +1390,7 @@ chọn ✕ Không để hệ thống ước tính
 </div>
 <hr className="my-3 border-slate-300" />
 
-<div className="flex justify-between items-start gap-3 bg-orange-50 rounded-lg px-4 py-3 mb-2 shadow-sm">              
+<div className="flex justify-between items-start gap-3 bg-orange-50 rounded-lg px-4 py-3 mb-2">              
   <span className="font-bold text-orange-700 flex-1">
     📊 Thu nhập tính thuế
   </span>
@@ -1398,7 +1400,7 @@ chọn ✕ Không để hệ thống ước tính
   </span>
 </div>
 
-  <div className="flex justify-between items-start gap-3 bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200 shadow-sm">
+  <div className="flex justify-between items-start gap-3 bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200">
   <span className="font-bold text-[#177D96] flex-1">
     🏛️ Tổng thuế phải nộp
   </span>
@@ -1408,7 +1410,7 @@ chọn ✕ Không để hệ thống ước tính
   </span>
 </div>
 
-  <div className="flex justify-between items-start gap-3 bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200 shadow-sm">
+  <div className="flex justify-between items-start gap-3 bg-purple-50 rounded-lg px-4 py-3 mb-2 border border-purple-200">
   <span className="font-bold text-purple-700 flex-1">
     ✅ Tổng thuế đã khấu trừ
   </span>
