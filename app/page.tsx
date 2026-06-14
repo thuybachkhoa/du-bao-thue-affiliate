@@ -28,13 +28,12 @@ import Image from "next/image";
     const [otherTax, setOtherTax] = useState("");
 
     const [dependents, setDependents] = useState("0");
-    const [taxYear, setTaxYear] = useState("2026"); 
-const [insuranceMode, setInsuranceMode] =
-  useState("");
+    const [taxYear, setTaxYear] = useState("2026");
+    const [taxPayerType, setTaxPayerType] =
+  useState("employee"); 
 const [showDeductionDetail, setShowDeductionDetail] = useState(false);
 const [insuranceAmount, setInsuranceAmount] =
   useState("");
-    const [knowSalaryTax, setKnowSalaryTax] = useState("");
     const [salaryTax, setSalaryTax] = useState("");
 const [showZaloPopup, setShowZaloPopup] =
   useState(false);
@@ -192,9 +191,7 @@ const numberToVietnameseWords = (num: number): string => {
     const handleCalculate = () => {
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
-  insuranceMode === "manual"
-    ? Math.min(parseNumber(insuranceAmount), 561600000) * 0.105
-    : Math.min(salaryIncome, 561600000) * 0.105;
+  parseNumber(insuranceAmount);
       const affiliateIncome =
     parseNumber(shopeeIncome) +
     parseNumber(tiktokIncome) +
@@ -226,15 +223,12 @@ const deduction =
   )
 );
 
-      const taxPaid =
-    parseNumber(shopeeTax) +
-    parseNumber(tiktokTax) +
-    parseNumber(lazadaTax) +
-    parseNumber(otherTax) +
-        (knowSalaryTax === "yes"
-          ? parseNumber(salaryTax)
-          : 0);
-
+const taxPaid =
+  parseNumber(shopeeTax) +
+  parseNumber(tiktokTax) +
+  parseNumber(lazadaTax) +
+  parseNumber(otherTax) +
+  parseNumber(salaryTax);
       const refundOrPayMore = Math.round(
   taxPaid - taxPayable
 );
@@ -296,9 +290,7 @@ const handleJoinZalo = () => {
     setOtherTax("");
 
     setDependents("0");
-setInsuranceMode("");
-setInsuranceAmount("");
-    setKnowSalaryTax("");
+    setInsuranceAmount("");
     setSalaryTax("");
 
     setResult({
@@ -577,11 +569,21 @@ if (popupSeen) {
     </span>
 
     <select
-      className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] font-semibold"
-    >
-      <option>Người lao động</option>
-      <option>Giám đốc không hưởng lương</option>
-    </select>
+  value={taxPayerType}
+  onChange={(e) =>
+    setTaxPayerType(e.target.value)
+  }
+  className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] font-semibold"
+>
+  <option value="employee">
+    Người lao động
+  </option>
+
+  <option value="director">
+    Giám đốc không hưởng lương
+  </option>
+</select>
+
   </div>
 </div>
     <p className="text-center text-green-600 text-base font-semibold mt-1">
@@ -605,12 +607,17 @@ if (popupSeen) {
 
   <div>
   <h2 className="font-bold text-xl">
-    1️⃣ THU NHẬP TỪ LƯƠNG (THỰC NHẬN)
+    {taxPayerType === "director"
+    ? "1️⃣ THU NHẬP CHỊU THUẾ KHÁC"
+    : "1️⃣ THU NHẬP TỪ LƯƠNG (THỰC NHẬN)"}
   </h2>
 
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
-        Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ...
-  </p>
+  {taxPayerType === "director"
+    ? "Thu nhập đầu tư, cổ tức, thu nhập khác..."
+    : "Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ..."}
+</p>
+
 </div>
 
   <div className="relative w-full md:w-auto">
@@ -623,8 +630,12 @@ if (popupSeen) {
         formatInputNumber(e.target.value)
       )
     }
-    placeholder="Nhập số lương"
-    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:italic placeholder:font-normal placeholder:text-amber-700"
+    placeholder={
+    taxPayerType === "director"
+      ? "Nhập số tiền"
+      : "Nhập số lương"
+  }
+    className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:text-base placeholder:font-normal placeholder:italic placeholder:text-amber-700"
   />
 
   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-700 font-bold text-lg">
@@ -672,38 +683,10 @@ if (popupSeen) {
   </div>
 
   <p className="text-sm text-[#177D96] italic mb-3">
-    Bạn biết lương đóng BHXH?
-  </p>
+  Tổng BHXH đã đóng trong năm
+</p>
 
-  <div className="grid grid-cols-2 gap-2 mb-3">
-
-    <button
-      type="button"
-      onClick={() => setInsuranceMode("manual")}
-      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
-        insuranceMode === "manual"
-          ? "border-[#177D96] bg-[#177D96]/10 text-[#177D96]"
-          : "border-[#177D96] bg-white"
-      }`}
-    >
-      ✓ Có
-    </button>
-
-    <button
-      type="button"
-      onClick={() => setInsuranceMode("auto")}
-      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
-        insuranceMode === "auto"
-          ? "border-[#177D96] bg-[#177D96]/10 text-[#EF4444]"
-          : "border-[#177D96] bg-white"
-      }`}
-    >
-      ✕ Không
-    </button>
-
-  </div>
-
-  {insuranceMode === "manual" && (
+<>
     <>
             <div className="relative">
 
@@ -715,25 +698,13 @@ if (popupSeen) {
               formatInputNumber(e.target.value)
             )
           }
-          placeholder="Tổng lương BHXH năm nay"
-          className="w-full border rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
+          placeholder="Nhập tổng BHXH đã đóng"
+          className="w-full border border-[#177D96] rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
         />
-      </div>
+        </div>
       </>
-  )}
-{insuranceMode === "auto" && (
-  <div className="mt-1 text-sm text-green-600 italic text-center">
-    ⚠️ Không tham gia BHXH: 
-    <br />
-    chọn ✓ Có và nhập 0.
-    <br />
-<div className="mt-1 text-sm text-amber-700 italic text-center">
-Không biết lương đóng BHXH: 
-<br />
-chọn ✕ Không để hệ thống ước tính
-  </div>
-  </div>
-)}
+  </>
+
 </div>
 
   <div className="flex flex-col">
@@ -746,65 +717,30 @@ chọn ✕ Không để hệ thống ước tính
   </div>
 
   <p className="text-sm text-[#177D96] italic mb-3">
-    Tại công ty từ đầu năm
+    Thuế TNCN đã nộp trong năm
   </p>
 
-  <div className="grid grid-cols-2 gap-2 mb-3">
-
-    <button
-      type="button"
-      onClick={() => setKnowSalaryTax("yes")}
-      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
-        knowSalaryTax === "yes"
-          ? "border-[#177D96] bg-[#177D96]/10 text-[#177D96]"
-          : "border-[#177D96] bg-white"
-      }`}
-    >
-      ✓ Có
-    </button>
-
-    <button
-      type="button"
-      onClick={() => setKnowSalaryTax("no")}
-      className={`rounded-lg border py-1 px-3 text-sm font-medium transition-all ${
-        knowSalaryTax === "no"
-          ? "border-[#177D96] bg-[#177D96]/10 text-[#EF4444]"
-          : "border-[#177D96] bg-white"
-      }`}
-    >
-      ✕ Không
-    </button>
-
-  </div>
-
-  {knowSalaryTax === "yes" && (
     <input
-      type="text"
-      value={salaryTax}
-      onChange={(e) =>
-        setSalaryTax(
-          formatInputNumber(e.target.value)
-        )
-      }
-      placeholder="Nhập số thuế chính xác"
-      className="w-full border rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
-    />
-  )}
+  type="text"
+  value={salaryTax}
+  onChange={(e) =>
+    setSalaryTax(
+      formatInputNumber(e.target.value)
+    )
+  }
+  placeholder="Nhập tổng thuế đã nộp"
+  className="w-full border border-[#177D96] rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
+/>
  </div>
 </div>
-{insuranceMode === "" && knowSalaryTax === "" && (
-  <div className="grid md:grid-cols-3 gap-8 -mt-2">
-    <div></div>
-
-    <div className="md:col-span-2">
-      <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1">
-        <p className="text-sm text-amber-700 italic text-center">
-          ⚠️ Lựa chọn này ảnh hưởng trực tiếp đến kết quả thuế
-        </p>
-      </div>
-    </div>
-  </div>
-)}
+<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
+  <p className="text-sm text-amber-700 italic text-center">
+    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
+  </p>
+  <p className="text-sm text-amber-700 italic text-center mt-1">
+    ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
+  </p>
+</div>
   </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
