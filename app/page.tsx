@@ -1224,7 +1224,7 @@ chọn ✕ Không để hệ thống ước tính
 
         <div>
       <div className="font-bold text-[#177D96] text-base leading-tight">
-        APP DỰ TÍNH THUẾ TNCN 2026
+        APP DỰ TÍNH THUẾ TNCN {taxYear}
       </div>
 
       <div className="text-xs text-slate-600 mt-1">
