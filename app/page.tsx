@@ -431,10 +431,7 @@ if (pdfHeader)
 if (webBanner)
   webBanner.classList.add("hidden");
   if (!resultRef.current) return;
-const isMobile =
-  /Android|iPhone|iPad|iPod/i.test(
-    navigator.userAgent
-  );
+
   try {
     await new Promise(resolve =>
   setTimeout(resolve, 1500)
