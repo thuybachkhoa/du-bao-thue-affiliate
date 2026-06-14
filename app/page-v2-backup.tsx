@@ -313,14 +313,77 @@ setInsuranceAmount("");
 });
 setShowZaloBanner(false);
   };
-  const handleShare = async () => {
-  const appTitle =
+const handleShare = async () => {
+  if (!resultRef.current) return;
+const isMobile =
+  /Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  );
+  try {
+    const shareHeader =
+  document.getElementById("share-header");
+
+const webBanner =
+  document.getElementById("web-banner");
+
+if (isMobile) {
+  if (shareHeader)
+    shareHeader.classList.remove("hidden");
+
+  if (webBanner)
+    webBanner.classList.add("hidden");
+
+  await new Promise(resolve =>
+    setTimeout(resolve, 500)
+  );
+}
+    const dataUrl = await toPng(
+      resultRef.current,
+      {
+        pixelRatio: 3,
+        backgroundColor: "#ffffff",
+      }
+    );
+if (isMobile) {
+  if (shareHeader)
+    shareHeader.classList.add("hidden");
+
+  if (webBanner)
+    webBanner.classList.remove("hidden");
+}
+    const blob = await (
+      await fetch(dataUrl)
+    ).blob();
+
+    const file = new File(
+      [blob],
+      "ket-qua-thue.png",
+      {
+        type: "image/png",
+      }
+    );
+
+  if (
+  isMobile &&
+  navigator.share &&
+  navigator.canShare?.({
+    files: [file],
+  })
+) {
+  await navigator.share({
+    title: "Kết quả dự tính thuế TNCN",
+    files: [file],
+  });
+
+  return;
+}
+
+    const shareText = `
+📊 ${
   taxYear === "2025"
     ? "KẾT QUẢ QUYẾT TOÁN THUẾ TNCN 2025"
-    : "KẾT QUẢ DỰ TÍNH THUẾ TNCN 2026";
-
-const shareText = `
-📊 ${appTitle}
+    : "KẾT QUẢ DỰ TÍNH THUẾ TNCN 2026"
+}
 
 💰 Tổng thu nhập: ${result.totalIncome.toLocaleString("vi-VN")} VNĐ
 📈 Thu nhập tính thuế: ${result.taxableIncome.toLocaleString("vi-VN")} VNĐ
@@ -335,31 +398,17 @@ ${
 
 🔗 https://du-tinh-tncn-2026.vercel.app
 
-Thủy Bách Khoa | Zalo 0932 171 685
+Thủy Bách Khoa | Zalo 0932-171-685
 `;
 
-  try {
-    const isMobile =
-  /Android|iPhone|iPad|iPod/i.test(
-    navigator.userAgent
-  );
+await navigator.clipboard.writeText(
+  shareText
+);
 
-if (navigator.share && isMobile) {
-  await navigator.share({
-    title: "DỰ TÍNH THUẾ TNCN 2026",
-    text: shareText,
-  });
+alert(
+  "Đã sao chép kết quả. Hãy dán vào Zalo hoặc Facebook."
+);
 
-  return;
-}
-
-    await navigator.clipboard.writeText(
-      shareText
-    );
-
-    alert(
-      "Đã sao chép kết quả. Hãy dán vào Zalo hoặc Facebook."
-    );
   } catch (error) {
     console.error(error);
   }
@@ -541,7 +590,7 @@ if (popupSeen) {
     : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
 </p>
 <div className="lg:grid lg:grid-cols-12 lg:gap-6">
-  <div className="lg:col-span-7 lg:h-[calc(100vh-80px)] lg:overflow-y-auto lg:pr-2">
+  <div className="lg:col-span-7 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto lg:pr-2">
           <div className="flex items-center gap-2 mt-4 mb-3">
     <span className="text-xl">📊</span>
 
@@ -1090,58 +1139,6 @@ chọn ✕ Không để hệ thống ước tính
   </div>
 </button>
 
-{/* Nút phụ */}
-{(
-  result.totalIncome > 0 ||
-  result.taxPayable > 0 ||
-  result.taxPaid > 0
-) && (
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-
-  <button
-    type="button"
-  onClick={handleExportPDF}
-    className="border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
-  >
-    <div className="flex items-center justify-center gap-2">
-      <span className="text-xl">📄</span>
-
-      <div className="text-left">
-        <div className="font-bold text-red-500 text-lg">
-          XUẤT PDF
-        </div>
-
-        <div className="text-sm text-gray-500">
-          Lưu kết quả ra PDF
-        </div>
-      </div>
-    </div>
-  </button>
-
-  <button
-    type="button"
-  onClick={handleShare}
-    className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
-  >
-    <div className="flex items-center justify-center gap-2">
-      <span className="text-xl">🔗</span>
-
-      <div className="text-left">
-        <div className="font-bold text-green-600 text-lg">
-          CHIA SẺ KẾT QUẢ
-        </div>
-
-        <div className="text-sm text-gray-500">
-          Chia sẻ qua Zalo, Facebook...
-        </div>
-      </div>
-    </div>
-  </button>
-
-</div>
-
-)}
 </div>
 <div className="lg:col-span-5 lg:sticky lg:top-4 lg:self-start">
 <div
@@ -1180,7 +1177,7 @@ chọn ✕ Không để hệ thống ước tính
               "_blank"
             )
           }
-          className="mt-3 bg-[#177D96] text-white px-4 py-2 rounded-lg text-sm"
+          className="mt-3 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-sm"
         >
           Tham gia nhóm Zalo →
         </button>
@@ -1219,6 +1216,41 @@ chọn ✕ Không để hệ thống ước tính
 
   </div>
 </div>
+<div
+  id="share-header"
+  className="hidden bg-white border border-[#177D96]/20 rounded-xl p-3 mb-4"
+>
+  <div className="flex items-center gap-3">
+
+    <img
+      src="/icon.png"
+      alt="App Icon"
+      width={48}
+      height={48}
+      className="rounded-lg"
+    />
+
+    <div>
+
+      <div className="font-bold text-[#177D96]">
+        APP DỰ TÍNH THUẾ TNCN 2026
+      </div>
+
+      <div className="text-sm text-slate-500">
+        👤 Thủy Bách Khoa • 📱 0932-171-685
+      </div>
+
+      <div className="text-xs text-slate-400">
+        📅 {new Date()
+          .toLocaleDateString("vi-VN")
+          .replace(/\//g, "-")}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
             <div className="text-left mb-4">
     <h2 className="font-bold text-2xl text-[#C26A1B]">
   📋 {taxYear === "2025"
@@ -1393,7 +1425,58 @@ chọn ✕ Không để hệ thống ước tính
     {formatMoney(result.taxPaid)}
   </span>
 </div>
+{/* Nút phụ */}
+{(
+  result.totalIncome > 0 ||
+  result.taxPayable > 0 ||
+  result.taxPaid > 0
+) && (
 
+<div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+
+  <button
+    type="button"
+  onClick={handleExportPDF}
+    className="hidden md:block border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
+  >
+    <div className="flex items-center justify-center gap-2">
+      <span className="text-xl">📄</span>
+
+      <div className="text-left">
+        <div className="font-bold text-red-500 text-lg">
+          XUẤT PDF
+        </div>
+
+        <div className="text-sm text-gray-500">
+          Lưu kết quả ra PDF
+        </div>
+      </div>
+    </div>
+  </button>
+
+  <button
+    type="button"
+  onClick={handleShare}
+    className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
+  >
+    <div className="flex items-center justify-center gap-2">
+      <span className="text-xl">🔗</span>
+
+      <div className="text-left">
+        <div className="font-bold text-green-600 text-lg">
+          CHIA SẺ KẾT QUẢ
+        </div>
+
+        <div className="text-sm text-gray-500">
+          Chia sẻ qua Zalo, Facebook...
+        </div>
+      </div>
+    </div>
+  </button>
+
+</div>
+
+)}
                   </div>
 
             <div className="mt-5 text-sm text-gray-500 border-t pt-3">
