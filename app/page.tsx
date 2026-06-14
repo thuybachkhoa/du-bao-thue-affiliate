@@ -1222,12 +1222,12 @@ chọn ✕ Không để hệ thống ước tính
 >
   <div className="flex items-center gap-3">
 
-    <Image
+    <img
       src="/icon.png"
       alt="App Icon"
       width={48}
       height={48}
-      unoptimized
+      className="rounded-lg"
     />
 
     <div>
