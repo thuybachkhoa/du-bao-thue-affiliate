@@ -39,6 +39,8 @@ const [showZaloPopup, setShowZaloPopup] =
   useState(false);
 const [showZaloBanner, setShowZaloBanner] =
   useState(false);  
+const [isCalculating, setIsCalculating] =
+  useState(false);  
     const [result, setResult] = useState({
   totalIncome: 0,
   deduction: 0,
@@ -188,7 +190,8 @@ const numberToVietnameseWords = (num: number): string => {
       return tax;
     };
 
-    const handleCalculate = () => {
+    const handleCalculate = async () => {
+      setIsCalculating(true);
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
   parseNumber(insuranceAmount);
@@ -232,7 +235,9 @@ const taxPaid =
       const refundOrPayMore = Math.round(
   taxPaid - taxPayable
 );
-
+await new Promise(resolve =>
+  setTimeout(resolve, 800)
+);
 setResult({
   totalIncome,
   deduction,
@@ -243,6 +248,7 @@ setResult({
   taxPaid,
   refundOrPayMore,
 });
+setIsCalculating(false);
     };
     const handleContinueToResult = () => {
   localStorage.setItem(
@@ -1055,23 +1061,42 @@ if (popupSeen) {
           {/* Nút chính */}
 <button
   type="submit"
+  disabled={isCalculating}
   className="w-full bg-[#177D96] hover:bg-[#146F85] text-white rounded-xl px-5 py-2 shadow-md transition-all"
 >
   <div className="relative flex items-center justify-center">
 
-  <span className="text-3xl mr-3">
-    🧮
-  </span>
+{isCalculating ? (
+  <>
+    <div className="w-6 h-6 mr-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
 
-  <div className="text-center">
-    <div className="font-bold text-lg">
-      TÍNH TOÁN NGAY
-    </div>
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        ĐANG TÍNH...
+      </div>
 
-    <div className="text-sm opacity-90">
-      Tính thuế TNCN chỉ trong vài giây
+      <div className="text-sm opacity-90">
+        Vui lòng chờ trong giây lát
+      </div>
     </div>
-  </div>
+  </>
+) : (
+  <>
+    <span className="text-3xl mr-3">
+      🧮
+    </span>
+
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        TÍNH TOÁN NGAY
+      </div>
+
+      <div className="text-sm opacity-90">
+        Tính thuế TNCN chỉ trong vài giây
+      </div>
+    </div>
+  </>
+)}
 
   </div>
 </button>
