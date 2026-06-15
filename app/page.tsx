@@ -858,6 +858,8 @@ if (popupSeen) {
   </p>
 </div>
   )}
+  {taxPayerType === "business" && (
+  <>
   <div
   className={`mt-4 rounded-xl p-4 bg-white border ${
     affiliateTaxError
@@ -924,6 +926,8 @@ if (popupSeen) {
       ℹ️ Doanh thu Affiliate sẽ được gộp vào doanh thu hộ kinh doanh để tính thuế.
     </p>
   </div>
+)}
+</>
 )}
 </div>
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
