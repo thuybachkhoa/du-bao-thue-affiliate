@@ -707,7 +707,7 @@ if (popupSeen) {
         setBusinessType(e.target.value);
         setBusinessTypeError(false);
       }}
-      className={`w-full rounded-xl px-4 py-2 bg-white border ${
+      className={`w-full rounded-xl text-center px-4 py-2.5 bg-white border ${
         businessTypeError
           ? "border-red-400"
           : "border-[#177D96]"
@@ -737,6 +737,15 @@ if (popupSeen) {
         Hoạt động kinh doanh khác
       </option>
     </select>
+
+    {businessTypeError && (
+  <div className="lg:col-start-2">
+    <p className="text-base text-red-600 italic text-center">
+      ⚠️ Vui lòng chọn ngành nghề kinh doanh.
+    </p>
+  </div>
+)}
+
 {businessType && (
 
 <div className="lg:col-start-2">
@@ -807,7 +816,7 @@ if (popupSeen) {
           : "border-[#177D96]"
       }`}
     >
-      <div className="flex flex-col gap-3 lg:flex-row lg:gap-16">
+      <div className="flex flex-col lg:flex-row justify-center gap-3 lg:gap-16">
 
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -838,24 +847,20 @@ if (popupSeen) {
         </label>
 
       </div>
+      {affiliateTaxError && (
+  <div className="lg:col-start-2">
+    <p className="text-base text-red-600 italic text-center">
+      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
+    </p>
+  </div>
+)}
     </div>
 
   </div>
 
   {/* Mobile giữ nguyên */}
-    {businessTypeError && (
-    <p className="mt-2 text-base text-red-600 italic">
-      ⚠️ Vui lòng chọn ngành nghề kinh doanh.
-    </p>
-  )}
-
-  {affiliateTaxError && (
-    <p className="mt-2 text-base text-red-600 italic">
-      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
-    </p>
-  )}
-
-    {affiliateTaxMode === "personal" && (
+    
+      {affiliateTaxMode === "personal" && (
       <div className="mt-3 flex justify-center lg:justify-end">
         <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-5 py-1">
       <p className="text-sm text-blue-700 italic text-center">
@@ -877,7 +882,98 @@ if (popupSeen) {
 
 </div>
 )}
-{taxPayerType !== "business" && (
+
+{taxPayerType === "business" &&
+ affiliateTaxMode === "personal" && (
+
+<div className="mt-3 rounded-xl border border-[#177D96] bg-white p-3">
+
+  <div className="font-semibold text-[#177D96] mb-2 text-base">
+    👔 Thu nhập cá nhân (nếu có)
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+
+    <div>
+      <label className="font-semibold text-center text-base italic text-[#177D96] block mb-2">
+        Thu nhập từ lương
+      </label>
+
+      <input
+        type="text"
+        value={salary}
+        onChange={(e) =>
+          setSalary(
+            formatInputNumber(e.target.value)
+          )
+        }
+        placeholder="Tổng lương trong năm"
+        className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+      />
+    </div>
+
+    <div>
+      <label className="font-semibold text-center text-base italic text-[#177D96] block mb-2">
+        Thuế lương đã khấu trừ
+      </label>
+
+      <input
+        type="text"
+        value={salaryTax}
+        onChange={(e) =>
+          setSalaryTax(
+            formatInputNumber(e.target.value)
+          )
+        }
+        placeholder="Tổng thuế TNCN"
+        className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+      />
+    </div>
+  
+<div>
+  <label className="font-semibold text-center text-base italic text-[#177D96] block mb-2">
+    BHXH đã đóng
+  </label>
+
+  <input
+    type="text"
+    value={insuranceAmount}
+    onChange={(e) =>
+      setInsuranceAmount(
+        formatInputNumber(e.target.value)
+      )
+    }
+    placeholder="Tổng BHXH"
+    className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+  />
+</div>
+
+<div>
+  <label className="font-semibold text-center text-base italic text-[#177D96] block mb-2">
+    Người phụ thuộc
+  </label>
+
+  <select
+    value={dependents}
+    onChange={(e) =>
+      setDependents(e.target.value)
+    }
+    className="w-full border border-[#177D96] rounded-lg px-2 py-2.5 text-center bg-white text-sm"
+  >
+    {[...Array(11)].map((_, i) => (
+      <option key={i} value={i}>
+        {i}
+      </option>
+    ))}
+  </select>
+</div>
+</div>
+</div>
+)}
+
+{(
+  taxPayerType !== "business"
+) && (
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
   {/* Người phụ thuộc */}
