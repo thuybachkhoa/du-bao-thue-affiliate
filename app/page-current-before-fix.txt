@@ -35,9 +35,17 @@ const [showDeductionDetail, setShowDeductionDetail] = useState(false);
 const [insuranceAmount, setInsuranceAmount] =
   useState("");
     const [salaryTax, setSalaryTax] = useState("");
+    const [businessType, setBusinessType] =
+  useState("service");
+  const [affiliateTaxMode, setAffiliateTaxMode] =
+  useState("");
+  const [affiliateTaxError, setAffiliateTaxError] =
+  useState(false);
 const [showZaloPopup, setShowZaloPopup] =
   useState(false);
 const [showZaloBanner, setShowZaloBanner] =
+  useState(false);  
+const [isCalculating, setIsCalculating] =
   useState(false);  
     const [result, setResult] = useState({
   totalIncome: 0,
@@ -188,7 +196,18 @@ const numberToVietnameseWords = (num: number): string => {
       return tax;
     };
 
-    const handleCalculate = () => {
+    const handleCalculate = async () => {
+      setIsCalculating(true);
+      if (
+  taxPayerType === "business" &&
+  !affiliateTaxMode
+) {
+  setAffiliateTaxError(true);
+
+  setIsCalculating(false);
+
+  return;
+}
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
   parseNumber(insuranceAmount);
@@ -232,7 +251,9 @@ const taxPaid =
       const refundOrPayMore = Math.round(
   taxPaid - taxPayable
 );
-
+await new Promise(resolve =>
+  setTimeout(resolve, 800)
+);
 setResult({
   totalIncome,
   deduction,
@@ -243,6 +264,7 @@ setResult({
   taxPaid,
   refundOrPayMore,
 });
+setIsCalculating(false);
     };
     const handleContinueToResult = () => {
   localStorage.setItem(
@@ -519,7 +541,7 @@ if (webBanner)
 };
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-[1800px] bg-white rounded-2xl shadow-lg p-4 md:p-6">
+        <div className="w-full max-w-[1800px] bg-white rounded-2xl shadow-lg p-8">
         <form
   onSubmit={(e) => {
     e.preventDefault();
@@ -541,125 +563,90 @@ if (popupSeen) {
   }}
 >
 
- {/* HEADER */}
-<div className="mb-5 border border-slate-200 rounded-2xl bg-white px-4 lg:px-20 py-4">
+ <h1 className="text-5xl font-bold text-center text-[#177D96]">
+  {taxYear === "2025"
+    ? "QUYẾT TOÁN THUẾ 2025"
+    : "DỰ TÍNH THUẾ 2026"}
+</h1>
+<div className="flex flex-col md:flex-row justify-center items-center gap-8 mt-2 mb-2">
 
-  <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
-
-    {/* BÊN TRÁI */}
-    <div className="w-full lg:w-[900px] shrink-0">
-
-      <div className="flex gap-3 lg:gap-10 items-start">
-
-  {/* LOGO RIÊNG */}
-  <div className="w-12 lg:w-[95px] shrink-0 flex justify-center">
-
-<img
-  src="/icon.png"
-  alt="Tax App"
-  className="w-12 h-12 lg:w-[90px] lg:h-[90px] object-contain"
-/>
-
-  </div>
-
-  {/* TIÊU ĐỀ */}
-  <div>
-
-    <h1 className="text-3xl lg:text-[58px] font-bold text-[#177D96] leading-none">
-      {taxYear === "2025"
-        ? "QUYẾT TOÁN THUẾ 2025"
-        : "DỰ TÍNH THUẾ 2026"}
-    </h1>
-
-    <div className="mt-2 inline-flex bg-green-50 border border-green-200 rounded-lg px-3 py-1">
-
-      <span className="text-base font-semibold text-green-700">
-        {taxYear === "2026"
-          ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
-          : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
-      </span>
-
-    </div>
-
-  </div>
-
-</div>
-
-    </div>
-{/* BÊN PHẢI */}
-<div className="flex gap-3 lg:gap-8 lg:pt-2">
-
-  <div className="w-full lg:w-[120px]">
-
-    <label className="block text-base text-center font-semibold text-[#C26A1B] mb-2">
+  <div className="flex items-center gap-3">
+    <span className="text-base font-semibold text-slate-800">
       Năm tính thuế
-    </label>
+    </span>
 
     <select
       value={taxYear}
       onChange={(e) => setTaxYear(e.target.value)}
-      className="w-full rounded-xl border border-[#177D96] bg-white px-4 py-2 font-semibold"
+      className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] font-semibold shadow-sm"
     >
       <option value="2026">2026</option>
       <option value="2025">2025</option>
     </select>
-
   </div>
 
-  <div className="w-full lg:w-[300px]">
-
-    <label className="block text-base text-center font-semibold text-[#C26A1B] mb-2">
+  <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 items-center">
+    <span className="text-base font-semibold text-slate-800">
       Đối tượng quyết toán
-    </label>
+    </span>
 
     <select
-      value={taxPayerType}
-      onChange={(e) =>
-        setTaxPayerType(e.target.value)
-      }
-      className="w-full rounded-xl border border-[#177D96] bg-white px-4 py-2 font-semibold"
-    >
-      <option value="employee">
-        Người lao động
-      </option>
+  value={taxPayerType}
+  onChange={(e) =>
+    setTaxPayerType(e.target.value)
+  }
+  className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] text-center font-semibold"
+>
+  <option value="employee">
+    Người lao động
+  </option>
 
-      <option value="director">
-        Giám đốc không hưởng lương
-      </option>
-    </select>
+  <option value="director">
+    Giám đốc không hưởng lương
+  </option>
+
+  <option value="business">
+  Chủ hộ kinh doanh cá thể
+  </option>
+</select>
 
   </div>
-
 </div>
-    
-  </div>
-
-</div>
-<div className="lg:grid lg:grid-cols-12 lg:gap-6">
-  <div className="lg:col-span-7 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto lg:pr-2">
-          <div className="flex items-center gap-2 mt-1 mb-3">
+    <p className="text-center text-green-600 text-base font-semibold mt-1">
+  {taxYear === "2026"
+    ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
+    : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
+</p>
+<div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
+  <div className="lg:col-span-7 pr-2">
+    <div className="bg-slate-50 rounded-xl p-4">
+          <div className="flex items-center gap-2 mt-2 mb-2">
     <span className="text-xl">📊</span>
 
     <h2 className="font-bold text-2xl text-[#C26A1B]">
       THÔNG TIN THU NHẬP
     </h2>
+  </div>
 
-      </div>
   <div className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
 
     <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
 
   <div>
   <h2 className="font-bold text-xl">
-    {taxPayerType === "director"
+  {taxPayerType === "business"
+    ? "1️⃣ DOANH THU HỘ KINH DOANH"
+    : taxPayerType === "director"
     ? "1️⃣ THU NHẬP CHỊU THUẾ KHÁC"
     : "1️⃣ THU NHẬP TỪ LƯƠNG (THỰC NHẬN)"}
-  </h2>
+</h2>
 
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
-  {taxPayerType === "director"
-    ? "Thu nhập đầu tư, cổ tức, thu nhập khác..."
-    : "Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ..."}
+  {taxPayerType === "business"
+  ? "Tổng doanh thu trong năm"
+  : taxPayerType === "director"
+  ? "Thu nhập đầu tư, cổ tức, thu nhập khác..."
+  : "Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ..."}
 </p>
 
 </div>
@@ -675,10 +662,12 @@ if (popupSeen) {
       )
     }
     placeholder={
-    taxPayerType === "director"
-      ? "Nhập số tiền"
-      : "Nhập số lương"
-  }
+  taxPayerType === "business"
+    ? "Nhập doanh thu"
+    : taxPayerType === "director"
+    ? "Nhập số tiền"
+    : "Nhập số lương"
+}
     className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:text-base placeholder:font-normal placeholder:italic placeholder:text-amber-700"
   />
 
@@ -689,6 +678,7 @@ if (popupSeen) {
 </div>
 
 </div>
+{taxPayerType !== "business" && (
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
   {/* Người phụ thuộc */}
@@ -697,7 +687,7 @@ if (popupSeen) {
     👫 Người phụ thuộc
   </label>
 
-<p className="text-base text-[#177D96] text-center italic mb-3">
+<p className="text-sm text-[#177D96] text-center italic mb-3">
     Đã đăng ký với BHXH
   </p>
 
@@ -705,7 +695,7 @@ if (popupSeen) {
     <select
       value={dependents}
       onChange={(e) => setDependents(e.target.value)}
-      className="w-24 border text-center rounded-lg border-[#177D96] bg-white px-3 py-2 bg-white pr-6"
+      className="w-24 border text-center rounded-lg border-[#177D96] bg-white px-3 py-2 bg-white pr-8"
     >
       {[...Array(11)].map((_, i) => (
         <option key={i} value={i}>
@@ -717,17 +707,17 @@ if (popupSeen) {
 </div>
 
 {/* Bảo hiểm */}
-<div className="flex flex-col items-center">
+<div className="flex flex-col  items-center">
 
-  <div className="flex items-center gap-2 mb-2">
+  <div className="flex items-center gap-2 mb-2 text-center">
     <span>🛡️</span>
     <span className="font-semibold text-base">
       Bảo hiểm bắt buộc
     </span>
   </div>
 
-  <p className="text-base text-[#177D96] italic mb-3 text-center">
-  Tổng BHXH đã đóng trong năm
+  <p className="text-sm text-[#177D96] italic mb-3">
+  BHXH đã đóng trong năm
 </p>
 
 <>
@@ -753,14 +743,14 @@ if (popupSeen) {
 
   <div className="flex flex-col items-center">
 
-  <div className="flex items-center gap-2 mb-2">
+  <div className="flex items-center gap-2 mb-2 text-center">
     <span>💰</span>
     <span className="font-semibold text-base">
       Thuế đã khấu trừ
     </span>
   </div>
 
-  <p className="text-base text-[#177D96] italic mb-3 text-center">
+  <p className="text-sm text-[#177D96] italic mb-3">
     Thuế TNCN đã nộp trong năm
   </p>
 
@@ -776,7 +766,9 @@ if (popupSeen) {
   className="w-full border border-[#177D96] rounded-xl text-center text-base font-medium px-3 py-2 bg-white placeholder:text-sm placeholder:italic placeholder:font-normal placeholder:text-slate-400"
 />
  </div>
-</div>
+ </div>
+)}
+{taxPayerType !== "business" && (
 <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
   <p className="text-base text-amber-700 italic text-center">
     ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
@@ -785,8 +777,75 @@ if (popupSeen) {
     ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
   </p>
 </div>
-  </div>
+  )}
+  <div
+  className={`mt-4 rounded-xl p-4 bg-slate-50 border ${
+    affiliateTaxError
+      ? "border-red-400 bg-red-50"
+      : "border-[#177D96]/20"
+  }`}
+>
 
+  <label className="block mb-3 font-semibold text-[#177D96]">
+  Thu nhập Affiliate được nhận bằng
+  {taxPayerType === "business" && (
+    <span className="text-red-500 ml-1">*</span>
+  )}
+</label>
+
+  <div className="flex flex-col md:flex-row gap-3 md:gap-16">
+
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name="affiliateTaxMode"
+        value="personal"
+        checked={affiliateTaxMode === "personal"}
+        onChange={(e) => {
+  setAffiliateTaxMode(e.target.value);
+  setAffiliateTaxError(false);
+}}
+      />
+      <span>Mã số thuế cá nhân</span>
+    </label>
+
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name="affiliateTaxMode"
+        value="business"
+        checked={affiliateTaxMode === "business"}
+        onChange={(e) => {
+  setAffiliateTaxMode(e.target.value);
+  setAffiliateTaxError(false);
+}}
+      />
+      <span>Mã số thuế hộ kinh doanh</span>
+    </label>
+
+  </div>
+ {affiliateTaxError && (
+    <p className="mt-2 text-base text-red-600 italic">
+      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
+    </p>
+  )}
+</div>
+{affiliateTaxMode === "personal" && (
+  <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
+    <p className="text-base text-blue-700 italic">
+      ℹ️ Doanh thu Affiliate sẽ được tách riêng khỏi doanh thu hộ kinh doanh để tính thuế.
+    </p>
+  </div>
+)}
+
+{affiliateTaxMode === "business" && (
+  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+    <p className="text-base text-amber-700  italic">
+      ℹ️ Doanh thu Affiliate sẽ được gộp vào doanh thu hộ kinh doanh để tính thuế.
+    </p>
+  </div>
+)}
+</div>
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 
   <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
@@ -1098,27 +1157,46 @@ if (popupSeen) {
           {/* Nút chính */}
 <button
   type="submit"
+  disabled={isCalculating}
   className="w-full bg-[#177D96] hover:bg-[#146F85] text-white rounded-xl px-5 py-2 shadow-md transition-all"
 >
   <div className="relative flex items-center justify-center">
 
-  <span className="text-3xl mr-3">
-    🧮
-  </span>
+{isCalculating ? (
+  <>
+    <div className="w-6 h-6 mr-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
 
-  <div className="text-center">
-    <div className="font-bold text-lg">
-      TÍNH TOÁN NGAY
-    </div>
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        ĐANG TÍNH...
+      </div>
 
-    <div className="text-sm opacity-90">
-      Tính thuế TNCN chỉ trong vài giây
+      <div className="text-sm opacity-90">
+        Vui lòng chờ trong giây lát
+      </div>
     </div>
-  </div>
+  </>
+) : (
+  <>
+    <span className="text-3xl mr-3">
+      🧮
+    </span>
+
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        TÍNH TOÁN NGAY
+      </div>
+
+      <div className="text-sm opacity-90">
+        Tính thuế TNCN chỉ trong vài giây
+      </div>
+    </div>
+  </>
+)}
 
   </div>
 </button>
-
+</div>
 </div>
 <div className="lg:col-span-5 lg:sticky lg:top-4 lg:self-start">
 <div
@@ -1128,14 +1206,14 @@ if (popupSeen) {
   {showZaloBanner && (
   <div
     id="web-banner"
-    className="border border-pink-100 rounded-xl p-4 mb-5 bg-[#FFF9FB]"
+    className="border border-pink-100 rounded-xl p-4 mb-3 bg-[#FFF9FB]"
   >
     <div className="flex items-center gap-3">
 
   <img
   src="/community-icon.png"
   alt="Cộng đồng Zalo"
-  className="w-26 h-26 rounded-full shrink-0"
+  className="w-24 h-24 rounded-full shrink-0"
 />
 
       <div className="flex-1">
@@ -1144,8 +1222,8 @@ if (popupSeen) {
           💖 Duy trì công cụ miễn phí
         </div>
 
-        <div className="text-sm text-slate-600 mt-1">
-          Nhóm Zalo chia sẻ deal, mã giảm giá
+        <div className="text-base text-slate-600 mt-1">
+          Nhóm chia sẻ deal, mã giảm giá
           và cơ hội kiếm thêm thu nhập Affiliate.
         </div>
 
@@ -1157,7 +1235,7 @@ if (popupSeen) {
               "_blank"
             )
           }
-          className="mt-3 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-sm"
+          className="mt-2 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-base"
         >
           Tham gia nhóm Zalo →
         </button>
@@ -1240,8 +1318,8 @@ if (popupSeen) {
   </div>
 
   {result.refundOrPayMore >= 0 ? (
-  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-5">
-  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-3">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center">
 
     <img
   src="/wallet-green.png"
@@ -1252,7 +1330,7 @@ if (popupSeen) {
 />
 
     <div>
-      <div className="text-green-600 text-base font-semibold uppercase">
+      <div className="text-green-600 text-lg font-semibold uppercase">
         {taxYear === "2025"
   ? "ĐƯỢC HOÀN THUẾ"
   : "DỰ KIẾN ĐƯỢC HOÀN THUẾ"}
@@ -1411,7 +1489,7 @@ if (popupSeen) {
   <button
     type="button"
   onClick={handleExportPDF}
-    className="hidden md:block border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
+    className="hidden md:block border-2 border-red-400 rounded-2xl py-1 px-4 bg-white hover:bg-red-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
       <span className="text-xl">📄</span>
@@ -1431,7 +1509,7 @@ if (popupSeen) {
   <button
     type="button"
   onClick={handleShare}
-    className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
+    className="border-2 border-green-500 rounded-2xl py-1 px-4 bg-white hover:bg-green-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
       <span className="text-xl">🔗</span>

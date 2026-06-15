@@ -39,6 +39,8 @@ const [showZaloPopup, setShowZaloPopup] =
   useState(false);
 const [showZaloBanner, setShowZaloBanner] =
   useState(false);  
+const [isCalculating, setIsCalculating] =
+  useState(false);  
     const [result, setResult] = useState({
   totalIncome: 0,
   deduction: 0,
@@ -188,7 +190,8 @@ const numberToVietnameseWords = (num: number): string => {
       return tax;
     };
 
-    const handleCalculate = () => {
+    const handleCalculate = async () => {
+      setIsCalculating(true);
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
   parseNumber(insuranceAmount);
@@ -232,7 +235,9 @@ const taxPaid =
       const refundOrPayMore = Math.round(
   taxPaid - taxPayable
 );
-
+await new Promise(resolve =>
+  setTimeout(resolve, 800)
+);
 setResult({
   totalIncome,
   deduction,
@@ -243,6 +248,7 @@ setResult({
   taxPaid,
   refundOrPayMore,
 });
+setIsCalculating(false);
     };
     const handleContinueToResult = () => {
   localStorage.setItem(
@@ -563,7 +569,7 @@ if (popupSeen) {
     </select>
   </div>
 
-  <div className="flex items-center gap-3">
+  <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 items-center">
     <span className="text-base font-semibold text-slate-800">
       Đối tượng quyết toán
     </span>
@@ -573,7 +579,7 @@ if (popupSeen) {
   onChange={(e) =>
     setTaxPayerType(e.target.value)
   }
-  className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] font-semibold"
+  className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] text-center font-semibold"
 >
   <option value="employee">
     Người lao động
@@ -591,9 +597,10 @@ if (popupSeen) {
     ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
     : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
 </p>
-<div className="lg:grid lg:grid-cols-12 lg:gap-6">
-  <div className="lg:col-span-7 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto lg:pr-2">
-          <div className="flex items-center gap-2 mt-4 mb-3">
+<div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
+  <div className="lg:col-span-7 pr-2">
+    <div className="bg-slate-50 rounded-xl p-4">
+          <div className="flex items-center gap-2 mt-2 mb-2">
     <span className="text-xl">📊</span>
 
     <h2 className="font-bold text-2xl text-[#C26A1B]">
@@ -654,7 +661,7 @@ if (popupSeen) {
   </label>
 
 <p className="text-sm text-[#177D96] text-center italic mb-3">
-    Gồm con, cha mẹ, vợ chồng... đã đăng ký với BHXH
+    Đã đăng ký với BHXH
   </p>
 
   <div className="flex justify-center">
@@ -673,9 +680,9 @@ if (popupSeen) {
 </div>
 
 {/* Bảo hiểm */}
-<div className="flex flex-col">
+<div className="flex flex-col  items-center">
 
-  <div className="flex items-center gap-2 mb-2">
+  <div className="flex items-center gap-2 mb-2 text-center">
     <span>🛡️</span>
     <span className="font-semibold text-base">
       Bảo hiểm bắt buộc
@@ -683,7 +690,7 @@ if (popupSeen) {
   </div>
 
   <p className="text-sm text-[#177D96] italic mb-3">
-  Tổng BHXH đã đóng trong năm
+  BHXH đã đóng trong năm
 </p>
 
 <>
@@ -707,9 +714,9 @@ if (popupSeen) {
 
 </div>
 
-  <div className="flex flex-col">
+  <div className="flex flex-col items-center">
 
-  <div className="flex items-center gap-2 mb-2">
+  <div className="flex items-center gap-2 mb-2 text-center">
     <span>💰</span>
     <span className="font-semibold text-base">
       Thuế đã khấu trừ
@@ -734,10 +741,10 @@ if (popupSeen) {
  </div>
 </div>
 <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-  <p className="text-sm text-amber-700 italic text-center">
+  <p className="text-base text-amber-700 italic text-center">
     ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
   </p>
-  <p className="text-sm text-amber-700 italic text-center mt-1">
+  <p className="text-base text-amber-700 italic text-center mt-1">
     ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
   </p>
 </div>
@@ -1054,27 +1061,46 @@ if (popupSeen) {
           {/* Nút chính */}
 <button
   type="submit"
+  disabled={isCalculating}
   className="w-full bg-[#177D96] hover:bg-[#146F85] text-white rounded-xl px-5 py-2 shadow-md transition-all"
 >
   <div className="relative flex items-center justify-center">
 
-  <span className="text-3xl mr-3">
-    🧮
-  </span>
+{isCalculating ? (
+  <>
+    <div className="w-6 h-6 mr-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
 
-  <div className="text-center">
-    <div className="font-bold text-lg">
-      TÍNH TOÁN NGAY
-    </div>
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        ĐANG TÍNH...
+      </div>
 
-    <div className="text-sm opacity-90">
-      Tính thuế TNCN chỉ trong vài giây
+      <div className="text-sm opacity-90">
+        Vui lòng chờ trong giây lát
+      </div>
     </div>
-  </div>
+  </>
+) : (
+  <>
+    <span className="text-3xl mr-3">
+      🧮
+    </span>
+
+    <div className="text-center">
+      <div className="font-bold text-lg">
+        TÍNH TOÁN NGAY
+      </div>
+
+      <div className="text-sm opacity-90">
+        Tính thuế TNCN chỉ trong vài giây
+      </div>
+    </div>
+  </>
+)}
 
   </div>
 </button>
-
+</div>
 </div>
 <div className="lg:col-span-5 lg:sticky lg:top-4 lg:self-start">
 <div
@@ -1084,14 +1110,14 @@ if (popupSeen) {
   {showZaloBanner && (
   <div
     id="web-banner"
-    className="border border-pink-100 rounded-xl p-4 mb-5 bg-[#FFF9FB]"
+    className="border border-pink-100 rounded-xl p-4 mb-3 bg-[#FFF9FB]"
   >
     <div className="flex items-center gap-3">
 
   <img
   src="/community-icon.png"
   alt="Cộng đồng Zalo"
-  className="w-26 h-26 rounded-full shrink-0"
+  className="w-24 h-24 rounded-full shrink-0"
 />
 
       <div className="flex-1">
@@ -1100,8 +1126,8 @@ if (popupSeen) {
           💖 Duy trì công cụ miễn phí
         </div>
 
-        <div className="text-sm text-slate-600 mt-1">
-          Nhóm Zalo chia sẻ deal, mã giảm giá
+        <div className="text-base text-slate-600 mt-1">
+          Nhóm chia sẻ deal, mã giảm giá
           và cơ hội kiếm thêm thu nhập Affiliate.
         </div>
 
@@ -1113,7 +1139,7 @@ if (popupSeen) {
               "_blank"
             )
           }
-          className="mt-3 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-sm"
+          className="mt-2 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-base"
         >
           Tham gia nhóm Zalo →
         </button>
@@ -1196,8 +1222,8 @@ if (popupSeen) {
   </div>
 
   {result.refundOrPayMore >= 0 ? (
-  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-5">
-  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-3">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center">
 
     <img
   src="/wallet-green.png"
@@ -1208,7 +1234,7 @@ if (popupSeen) {
 />
 
     <div>
-      <div className="text-green-600 text-base font-semibold uppercase">
+      <div className="text-green-600 text-lg font-semibold uppercase">
         {taxYear === "2025"
   ? "ĐƯỢC HOÀN THUẾ"
   : "DỰ KIẾN ĐƯỢC HOÀN THUẾ"}
@@ -1367,7 +1393,7 @@ if (popupSeen) {
   <button
     type="button"
   onClick={handleExportPDF}
-    className="hidden md:block border-2 border-red-400 rounded-2xl py-2 px-4 bg-white hover:bg-red-50 transition-all"
+    className="hidden md:block border-2 border-red-400 rounded-2xl py-1 px-4 bg-white hover:bg-red-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
       <span className="text-xl">📄</span>
@@ -1387,7 +1413,7 @@ if (popupSeen) {
   <button
     type="button"
   onClick={handleShare}
-    className="border-2 border-green-500 rounded-2xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
+    className="border-2 border-green-500 rounded-2xl py-1 px-4 bg-white hover:bg-green-50 transition-all"
   >
     <div className="flex items-center justify-center gap-2">
       <span className="text-xl">🔗</span>
