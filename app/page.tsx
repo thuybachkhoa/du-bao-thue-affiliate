@@ -598,7 +598,7 @@ if (popupSeen) {
     : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
 </p>
 <div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
-  <div className="lg:col-span-7 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto lg:pr-2">
+  <div className="lg:col-span-7 pr-2">
     <div className="bg-slate-50 rounded-xl p-4">
           <div className="flex items-center gap-2 mt-2 mb-2">
     <span className="text-xl">📊</span>
@@ -1117,7 +1117,7 @@ if (popupSeen) {
   <img
   src="/community-icon.png"
   alt="Cộng đồng Zalo"
-  className="w-20 h-20 rounded-full shrink-0"
+  className="w-24 h-24 rounded-full shrink-0"
 />
 
       <div className="flex-1">
@@ -1126,8 +1126,8 @@ if (popupSeen) {
           💖 Duy trì công cụ miễn phí
         </div>
 
-        <div className="text-sm text-slate-600 mt-1">
-          Nhóm Zalo chia sẻ deal, mã giảm giá
+        <div className="text-base text-slate-600 mt-1">
+          Nhóm chia sẻ deal, mã giảm giá
           và cơ hội kiếm thêm thu nhập Affiliate.
         </div>
 
@@ -1139,7 +1139,7 @@ if (popupSeen) {
               "_blank"
             )
           }
-          className="mt-2 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-sm"
+          className="mt-2 bg-[#177D96] text-white px-4 py-2 font-bold rounded-lg text-base"
         >
           Tham gia nhóm Zalo →
         </button>
@@ -1222,8 +1222,8 @@ if (popupSeen) {
   </div>
 
   {result.refundOrPayMore >= 0 ? (
-  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-5">
-  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+  <div className="bg-green-50 border border-green-200 rounded-2xl p-3 mb-3">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center">
 
     <img
   src="/wallet-green.png"
@@ -1234,7 +1234,7 @@ if (popupSeen) {
 />
 
     <div>
-      <div className="text-green-600 text-base font-semibold uppercase">
+      <div className="text-green-600 text-lg font-semibold uppercase">
         {taxYear === "2025"
   ? "ĐƯỢC HOÀN THUẾ"
   : "DỰ KIẾN ĐƯỢC HOÀN THUẾ"}
