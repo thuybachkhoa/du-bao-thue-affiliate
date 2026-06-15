@@ -691,72 +691,191 @@ if (popupSeen) {
 
 </div>
 {taxPayerType === "business" && (
-  <div className="mt-4">
+<div className="mt-4">
 
-    <label className="block mb-2 font-semibold text-[#177D96]">
+  {/* PC */}
+  <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-3 items-center">
+
+    <label className="font-semibold text-[#177D96] lg:whitespace-nowrap">
       📌 Ngành nghề kinh doanh chính
-      {taxPayerType === "business" && (
-    <span className="text-red-500 ml-1">*</span>
-  )}
+      <span className="text-red-500 ml-1">*</span>
     </label>
 
     <select
-  value={businessType}
-  onChange={(e) => {
-  setBusinessType(e.target.value);
-  setBusinessTypeError(false);
-}}
-  className={`w-full rounded-xl px-4 py-3 bg-white border ${
-  businessTypeError
-    ? "border-red-400"
-    : "border-[#177D96]"
-} ${
-  !businessType
-    ? "text-[#D46A00] italic"
-    : "text-black not-italic"
-}`}
->
-  <option value="" disabled>
-    Chọn ngành nghề kinh doanh
-  </option>
+      value={businessType}
+      onChange={(e) => {
+        setBusinessType(e.target.value);
+        setBusinessTypeError(false);
+      }}
+      className={`w-full rounded-xl px-4 py-2 bg-white border ${
+        businessTypeError
+          ? "border-red-400"
+          : "border-[#177D96]"
+      } ${
+        !businessType
+          ? "text-[#D46A00] italic"
+          : "text-black not-italic"
+      }`}
+    >
+      <option value="" disabled>
+        Chọn ngành nghề kinh doanh
+      </option>
 
-  <option value="goods">
-    Phân phối, cung cấp hàng hóa
-  </option>
+      <option value="goods">
+        Phân phối, cung cấp hàng hóa
+      </option>
 
-  <option value="production">
-    Sản xuất, vận tải
-  </option>
+      <option value="production">
+        Sản xuất, vận tải
+      </option>
 
-  <option value="service">
-    Dịch vụ
-  </option>
+      <option value="service">
+        Dịch vụ
+      </option>
 
-  <option value="other">
-    Hoạt động kinh doanh khác
-  </option>
-</select>
-{businessTypeError && (
-  <p className="mt-2 text-base text-red-600 italic">
-    ⚠️ Vui lòng chọn ngành nghề kinh doanh.
-  </p>
-)}
+      <option value="other">
+        Hoạt động kinh doanh khác
+      </option>
+    </select>
 {businessType && (
-    <p className="mt-2 text-sm italic text-[#177D96]">
-  {businessType === "goods" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 0,5% trên doanh thu."}
 
-  {businessType === "service" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 2% trên doanh thu."}
+<div className="lg:col-start-2">
 
-  {businessType === "production" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 1,5% trên doanh thu."}
+  <p className="text-sm italic text-[#177D96] text-center">
 
-  {businessType === "other" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 1% trên doanh thu."}
-</p>
-)}
+
+
+      {businessType === "goods" &&
+
+
+
+        "ℹ️ Áp dụng tỷ lệ thuế TNCN 0,5% trên doanh thu."}
+
+
+
+
+
+
+
+      {businessType === "service" &&
+
+
+
+        "ℹ️ Áp dụng tỷ lệ thuế TNCN 2% trên doanh thu."}
+
+
+
+
+
+
+
+      {businessType === "production" &&
+
+
+
+        "ℹ️ Áp dụng tỷ lệ thuế TNCN 1,5% trên doanh thu."}
+
+
+
+
+
+
+
+      {businessType === "other" &&
+
+
+
+        "ℹ️ Áp dụng tỷ lệ thuế TNCN 1% trên doanh thu."}
+
+
+
+    </p>
+
+</div>
+
+  )}
+
+    <label className="font-semibold text-[#177D96] lg:whitespace-nowrap">
+      📌 Thu nhập Affiliate được nhận bằng
+      <span className="text-red-500 ml-1">*</span>
+    </label>
+
+    <div
+      className={`rounded-xl border px-5 py-2 bg-white ${
+        affiliateTaxError
+          ? "border-red-400"
+          : "border-[#177D96]"
+      }`}
+    >
+      <div className="flex flex-col gap-3 lg:flex-row lg:gap-16">
+
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="affiliateTaxMode"
+            value="personal"
+            checked={affiliateTaxMode === "personal"}
+            onChange={(e) => {
+              setAffiliateTaxMode(e.target.value);
+              setAffiliateTaxError(false);
+            }}
+          />
+          <span>Mã số thuế cá nhân</span>
+        </label>
+
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="affiliateTaxMode"
+            value="business"
+            checked={affiliateTaxMode === "business"}
+            onChange={(e) => {
+              setAffiliateTaxMode(e.target.value);
+              setAffiliateTaxError(false);
+            }}
+          />
+          <span>Mã số thuế hộ kinh doanh</span>
+        </label>
+
+      </div>
+    </div>
+
   </div>
+
+  {/* Mobile giữ nguyên */}
+    {businessTypeError && (
+    <p className="mt-2 text-base text-red-600 italic">
+      ⚠️ Vui lòng chọn ngành nghề kinh doanh.
+    </p>
+  )}
+
+  {affiliateTaxError && (
+    <p className="mt-2 text-base text-red-600 italic">
+      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
+    </p>
+  )}
+
+    {affiliateTaxMode === "personal" && (
+      <div className="mt-3 flex justify-center lg:justify-end">
+        <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-5 py-1">
+      <p className="text-sm text-blue-700 italic text-center">
+        ℹ️ Doanh thu Affiliate sẽ tách riêng khỏi doanh thu hộ kinh doanh để tính thuế.
+      </p>
+    </div>
+    </div>
+  )}
+
+  {affiliateTaxMode === "business" && (
+    <div className="mt-3 flex justify-center lg:justify-end">
+  <div className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-5 py-1">
+      <p className="text-sm text-amber-700 italic text-center">
+        ℹ️ Doanh thu Affiliate sẽ được gộp vào doanh thu hộ kinh doanh để tính thuế.
+      </p>
+    </div>
+    </div>
+  )}
+
+</div>
 )}
 {taxPayerType !== "business" && (
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
@@ -858,77 +977,7 @@ if (popupSeen) {
   </p>
 </div>
   )}
-  {taxPayerType === "business" && (
-  <>
-  <div
-  className={`mt-4 rounded-xl p-4 bg-white border ${
-    affiliateTaxError
-      ? "border-red-400"
-      : "border-[#177D96]"
-  }`}
->
-
-  <label className="block mb-3 font-semibold text-[#177D96]">
- 📌 Thu nhập Affiliate được nhận bằng
-  {taxPayerType === "business" && (
-    <span className="text-red-500 ml-1">*</span>
-  )}
-</label>
-
-  <div className="flex flex-col md:flex-row gap-3 md:gap-16">
-
-    <label className="flex items-center gap-2 cursor-pointer">
-      <input
-        type="radio"
-        name="affiliateTaxMode"
-        value="personal"
-        checked={affiliateTaxMode === "personal"}
-        onChange={(e) => {
-  setAffiliateTaxMode(e.target.value);
-  setAffiliateTaxError(false);
-}}
-      />
-      <span>Mã số thuế cá nhân</span>
-    </label>
-
-    <label className="flex items-center gap-2 cursor-pointer">
-      <input
-        type="radio"
-        name="affiliateTaxMode"
-        value="business"
-        checked={affiliateTaxMode === "business"}
-        onChange={(e) => {
-  setAffiliateTaxMode(e.target.value);
-  setAffiliateTaxError(false);
-}}
-      />
-      <span>Mã số thuế hộ kinh doanh</span>
-    </label>
-
-  </div>
- {affiliateTaxError && (
-    <p className="mt-2 text-base text-red-600 italic">
-      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
-    </p>
-  )}
-</div>
-{affiliateTaxMode === "personal" && (
-  <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-1">
-    <p className="text-base text-blue-700 italic">
-      ℹ️ Doanh thu Affiliate sẽ được tách riêng khỏi doanh thu hộ kinh doanh để tính thuế.
-    </p>
-  </div>
-)}
-
-{affiliateTaxMode === "business" && (
-  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-    <p className="text-base text-amber-700  italic">
-      ℹ️ Doanh thu Affiliate sẽ được gộp vào doanh thu hộ kinh doanh để tính thuế.
-    </p>
-  </div>
-)}
-</>
-)}
+  
 </div>
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 

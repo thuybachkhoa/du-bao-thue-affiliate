@@ -36,13 +36,10 @@ const [insuranceAmount, setInsuranceAmount] =
   useState("");
     const [salaryTax, setSalaryTax] = useState("");
     const [businessType, setBusinessType] =
-  useState("");
-  console.log("businessType =", businessType);
+  useState("service");
   const [affiliateTaxMode, setAffiliateTaxMode] =
   useState("");
   const [affiliateTaxError, setAffiliateTaxError] =
-  useState(false);
-  const [businessTypeError, setBusinessTypeError] =
   useState(false);
 const [showZaloPopup, setShowZaloPopup] =
   useState(false);
@@ -201,24 +198,15 @@ const numberToVietnameseWords = (num: number): string => {
 
     const handleCalculate = async () => {
       setIsCalculating(true);
-  if (taxPayerType === "business") {
+      if (
+  taxPayerType === "business" &&
+  !affiliateTaxMode
+) {
+  setAffiliateTaxError(true);
 
-  let hasError = false;
+  setIsCalculating(false);
 
-  if (!businessType) {
-    setBusinessTypeError(true);
-    hasError = true;
-  }
-
-  if (!affiliateTaxMode) {
-    setAffiliateTaxError(true);
-    hasError = true;
-  }
-
-  if (hasError) {
-    setIsCalculating(false);
-    return;
-  }
+  return;
 }
       const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
@@ -690,74 +678,6 @@ if (popupSeen) {
 </div>
 
 </div>
-{taxPayerType === "business" && (
-  <div className="mt-4">
-
-    <label className="block mb-2 font-semibold text-[#177D96]">
-      📌 Ngành nghề kinh doanh chính
-      {taxPayerType === "business" && (
-    <span className="text-red-500 ml-1">*</span>
-  )}
-    </label>
-
-    <select
-  value={businessType}
-  onChange={(e) => {
-  setBusinessType(e.target.value);
-  setBusinessTypeError(false);
-}}
-  className={`w-full rounded-xl px-4 py-3 bg-white border ${
-  businessTypeError
-    ? "border-red-400"
-    : "border-[#177D96]"
-} ${
-  !businessType
-    ? "text-[#D46A00] italic"
-    : "text-black not-italic"
-}`}
->
-  <option value="" disabled>
-    Chọn ngành nghề kinh doanh
-  </option>
-
-  <option value="goods">
-    Phân phối, cung cấp hàng hóa
-  </option>
-
-  <option value="production">
-    Sản xuất, vận tải
-  </option>
-
-  <option value="service">
-    Dịch vụ
-  </option>
-
-  <option value="other">
-    Hoạt động kinh doanh khác
-  </option>
-</select>
-{businessTypeError && (
-  <p className="mt-2 text-base text-red-600 italic">
-    ⚠️ Vui lòng chọn ngành nghề kinh doanh.
-  </p>
-)}
-{businessType && (
-    <p className="mt-2 text-sm italic text-[#177D96]">
-  {businessType === "goods" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 0,5% trên doanh thu."}
-
-  {businessType === "service" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 2% trên doanh thu."}
-
-  {businessType === "production" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 1,5% trên doanh thu."}
-
-  {businessType === "other" &&
-    "ℹ️ Áp dụng tỷ lệ thuế TNCN 1% trên doanh thu."}
-</p>
-)}
-  </div>
-)}
 {taxPayerType !== "business" && (
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
@@ -859,15 +779,15 @@ if (popupSeen) {
 </div>
   )}
   <div
-  className={`mt-4 rounded-xl p-4 bg-white border ${
+  className={`mt-4 rounded-xl p-4 bg-slate-50 border ${
     affiliateTaxError
-      ? "border-red-400"
-      : "border-[#177D96]"
+      ? "border-red-400 bg-red-50"
+      : "border-[#177D96]/20"
   }`}
 >
 
   <label className="block mb-3 font-semibold text-[#177D96]">
- 📌 Thu nhập Affiliate được nhận bằng
+  Thu nhập Affiliate được nhận bằng
   {taxPayerType === "business" && (
     <span className="text-red-500 ml-1">*</span>
   )}
@@ -911,7 +831,7 @@ if (popupSeen) {
   )}
 </div>
 {affiliateTaxMode === "personal" && (
-  <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-1">
+  <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
     <p className="text-base text-blue-700 italic">
       ℹ️ Doanh thu Affiliate sẽ được tách riêng khỏi doanh thu hộ kinh doanh để tính thuế.
     </p>
@@ -919,7 +839,7 @@ if (popupSeen) {
 )}
 
 {affiliateTaxMode === "business" && (
-  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
+  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
     <p className="text-base text-amber-700  italic">
       ℹ️ Doanh thu Affiliate sẽ được gộp vào doanh thu hộ kinh doanh để tính thuế.
     </p>
