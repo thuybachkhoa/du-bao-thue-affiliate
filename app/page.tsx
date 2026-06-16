@@ -394,7 +394,7 @@ ${
     : `⚠️ Dự kiến phải nộp thêm: ${Math.abs(result.refundOrPayMore).toLocaleString("vi-VN")} VNĐ`
 }
 
-🔗 https://du-tinh-tncn-2026.vercel.app
+🔗 Truy cập https://tinhthuetncn.vercel.app/
 
 Thủy Bách Khoa | Zalo 0932-171-685
 `;
