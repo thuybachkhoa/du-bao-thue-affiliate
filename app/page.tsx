@@ -682,8 +682,23 @@ if (popupSeen) {
 </div>
 
 </div>
+<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
+  <p className="text-base text-amber-700 italic text-center">
+
+    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
+
+  </p>
+
+  <p className="text-base text-amber-700 italic text-center mt-1">
+
+    ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
+
+  </p>
+
+</div>
+
+<div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
   {/* Người phụ thuộc */}
   <div>
@@ -771,17 +786,6 @@ if (popupSeen) {
 />
  </div>
  </div>
-
-
-<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-  <p className="text-base text-amber-700 italic text-center">
-    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
-  </p>
-  <p className="text-base text-amber-700 italic text-center mt-1">
-    ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
-  </p>
-</div>
-  
  </div>
  
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
