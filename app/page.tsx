@@ -932,7 +932,7 @@ if (popupSeen) {
   </div>
 
   {/* Mobile giữ nguyên */}
-    <div className="mt-4 mb-3 grid grid-cols-1 lg:grid-cols-[260px_1fr] items-center gap-4">
+    <div className="mt-4 mb-3 grid grid-cols-1 font-bold text-[#177D96] lg:grid-cols-[260px_1fr] items-center gap-4">
     📌 Thu nhập cá nhân (nếu có)
     
       {affiliateTaxMode === "personal" && (
@@ -1033,7 +1033,7 @@ onChange={(e) =>
     onChange={(e) =>
       setDependents(e.target.value)
     }
-    className="w-full border border-[#177D96] rounded-lg px-2 py-2.5 text-center bg-white text-sm"
+    className="w-full h-9.5 border border-[#177D96] rounded-lg px-2 text-center bg-white text-sm"
   >
     {[...Array(11)].map((_, i) => (
       <option key={i} value={i}>
