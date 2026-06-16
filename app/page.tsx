@@ -599,16 +599,34 @@ if (popupSeen) {
     Giám đốc không hưởng lương
   </option>
 
+  <option value="business">
+    Hộ kinh doanh
+  </option>
+
   </select>
 
   </div>
 </div>
-    <p className="text-center text-green-600 text-base font-semibold mt-1">
-  {taxYear === "2026"
-    ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
-    : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
-</p>
+   {taxPayerType === "business" && (
+  <div className="mt-6 max-w-3xl mx-auto rounded-2xl border border-blue-200 bg-slate-100 p-8 text-center">
+    <div className="text-5xl mb-4">🚧</div>
 
+    <h2 className="text-3xl font-bold text-[#C26A1B] mb-4">
+      Chức năng đang được cập nhật
+    </h2>
+
+    <p className="text-lg text-slate-700">
+      Chức năng tính thuế đối với hộ kinh doanh đang được cập nhật theo quy định
+      pháp luật mới nhằm đảm bảo kết quả tính toán chính xác.
+    </p>
+
+    <p className="mt-5 italic text-slate-500">
+      Vui lòng quay lại trong phiên bản cập nhật tiếp theo.
+    </p>
+  </div>
+)}
+
+{taxPayerType !== "business" && (
 <div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
   <div className="lg:col-span-7 pr-2">
     <div className="bg-slate-50 rounded-xl p-4">
@@ -765,6 +783,7 @@ if (popupSeen) {
 </div>
   
  </div>
+ 
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 
   <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
@@ -1475,7 +1494,7 @@ if (popupSeen) {
             </div>
 </div>
 </div>
-
+)}
 </form>
 {showZaloPopup && (
   <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
