@@ -16,7 +16,7 @@ import Image from "next/image";
 
   export default function Home() {
     const [salary, setSalary] = useState("");
-    const [businessIncome, setBusinessIncome] = useState("");
+
     const [shopeeIncome, setShopeeIncome] = useState("");
     const [tiktokIncome, setTiktokIncome] = useState("");
     const [lazadaIncome, setLazadaIncome] = useState("");
@@ -35,56 +35,27 @@ const [showDeductionDetail, setShowDeductionDetail] = useState(false);
 const [insuranceAmount, setInsuranceAmount] =
   useState("");
     const [salaryTax, setSalaryTax] = useState("");
-    const [businessType, setBusinessType] =
-  useState("");
-  console.log("businessType =", businessType);
-  const [affiliateTaxMode, setAffiliateTaxMode] =
-  useState("");
-  const [affiliateTaxError, setAffiliateTaxError] =
-  useState(false);
-  const [businessTypeError, setBusinessTypeError] =
-  useState(false);
-const [showZaloPopup, setShowZaloPopup] =
+    const [showZaloPopup, setShowZaloPopup] =
   useState(false);
 const [showZaloBanner, setShowZaloBanner] =
   useState(false);  
 const [isCalculating, setIsCalculating] =
   useState(false);  
-  const [hasCalculated, setHasCalculated] = useState(false);
     const [result, setResult] = useState({
   totalIncome: 0,
-
-  businessRevenue: 0,
-  salaryIncome: 0,
-  affiliateIncome: 0,
-
   deduction: 0,
   insuranceDeduction: 0,
   personalDeduction: 0,
-
   taxableIncome: 0,
-
-  businessTax: 0,
-  affiliateBusinessTax: 0,
-  personalTax: 0,
-
   taxPayable: 0,
   taxPaid: 0,
   refundOrPayMore: 0,
 });
 const resultRef = useRef<HTMLDivElement>(null);
     const formatMoney = (value?: number) => {
-       return (value ?? 0).toLocaleString("vi-VN") + " VNĐ";
+  return (value ?? 0).toLocaleString("vi-VN") + " VNĐ";
 };
-   const businessTaxRate =
-  businessType === "goods"
-    ? "0,5%"
-    : businessType === "service"
-    ? "2%"
-    : businessType === "production"
-    ? "1,5%"
-    : "1%";
-    const affiliateBusinessTaxRate = "2%";
+  
 const numberToVietnameseWords = (num: number): string => {
       num = Math.round(num);
   if (num === 0) return "Không đồng";
@@ -221,28 +192,7 @@ const numberToVietnameseWords = (num: number): string => {
 
     const handleCalculate = async () => {
       setIsCalculating(true);
-  if (taxPayerType === "business") {
-
-  let hasError = false;
-
-  if (!businessType) {
-    setBusinessTypeError(true);
-    hasError = true;
-  }
-
-  if (!affiliateTaxMode) {
-    setAffiliateTaxError(true);
-    hasError = true;
-  }
-
-  if (hasError) {
-    setIsCalculating(false);
-    return;
-  }
-}
-      const businessRevenue = parseNumber(businessIncome);
-
-const salaryIncome = parseNumber(salary);
+    const salaryIncome = parseNumber(salary);
 const insuranceDeduction =
   parseNumber(insuranceAmount);
       const affiliateIncome =
@@ -251,10 +201,7 @@ const insuranceDeduction =
     parseNumber(lazadaIncome) +
     parseNumber(otherIncome);
 
-      const totalIncome =
-  businessRevenue +
-  salaryIncome +
-  affiliateIncome;
+      const totalIncome = salaryIncome + affiliateIncome;
 
       const personalDeduction =
   taxYear === "2026"
@@ -267,78 +214,18 @@ const deduction =
   personalDeduction +
   insuranceDeduction;
 
-      let taxableIncome = 0;
-
-if (taxPayerType === "business") {
-
-  if (affiliateTaxMode === "personal") {
-
-    taxableIncome =
-      businessRevenue +
-      Math.max(
+      const taxableIncome = Math.max(
         0,
-        salaryIncome +
-        affiliateIncome -
-        deduction
+        totalIncome - deduction
       );
 
-  } else {
-
-    taxableIncome =
-      businessRevenue +
-      affiliateIncome +
-      Math.max(
-        0,
-        salaryIncome -
-        deduction
-      );
-
-  }
-
-} else {
-
-  taxableIncome = Math.max(
-    0,
-    totalIncome - deduction
-  );
-
-}
-
-  let taxPayable = 0;
-  let businessTax = 0;
-
-if (businessType === "goods") {
-  businessTax = businessRevenue * 0.005;
-} else if (businessType === "service") {
-  businessTax = businessRevenue * 0.02;
-} else if (businessType === "production") {
-  businessTax = businessRevenue * 0.015;
-} else if (businessType === "other") {
-  businessTax = businessRevenue * 0.01;
-}
-let affiliateBusinessTax = 0;
-
-if (affiliateTaxMode === "business") {
-  affiliateBusinessTax = affiliateIncome * 0.02;
-}
-let personalTax = 0;
-
-if (affiliateTaxMode === "personal") {
-  personalTax = calculateTax(
-    Math.max(0, salaryIncome + affiliateIncome - deduction),
+  const taxPayable = Math.round(
+  calculateTax(
+    taxableIncome,
     taxYear
-  );
-} else {
-  personalTax = calculateTax(
-    Math.max(0, salaryIncome - deduction),
-    taxYear
-  );
-}
-taxPayable = Math.round(
-  businessTax +
-  affiliateBusinessTax +
-  personalTax
+  )
 );
+
 const taxPaid =
   parseNumber(shopeeTax) +
   parseNumber(tiktokTax) +
@@ -360,15 +247,7 @@ setResult({
   taxPayable,
   taxPaid,
   refundOrPayMore,
-
-  businessRevenue,
-  salaryIncome,
-  affiliateIncome,
-  businessTax,
-  affiliateBusinessTax,
-  personalTax,
 });
-setHasCalculated(true);
 setIsCalculating(false);
     };
     const handleContinueToResult = () => {
@@ -422,21 +301,10 @@ const handleJoinZalo = () => {
 
     setResult({
   totalIncome: 0,
-
-  businessRevenue: 0,
-  salaryIncome: 0,
-  affiliateIncome: 0,
-
   deduction: 0,
   insuranceDeduction: 0,
   personalDeduction: 0,
-
   taxableIncome: 0,
-
-  businessTax: 0,
-  affiliateBusinessTax: 0,
-  personalTax: 0,
-
   taxPayable: 0,
   taxPaid: 0,
   refundOrPayMore: 0,
@@ -516,7 +384,7 @@ if (isMobile) {
 }
 
 💰 Tổng thu nhập: ${result.totalIncome.toLocaleString("vi-VN")} VNĐ
-📈 Thu nhập chịu thuế: ${result.taxableIncome.toLocaleString("vi-VN")} VNĐ
+📈 Thu nhập tính thuế: ${result.taxableIncome.toLocaleString("vi-VN")} VNĐ
 🏛️ Tổng thuế phải nộp: ${result.taxPayable.toLocaleString("vi-VN")} VNĐ
 ✅ Thuế đã khấu trừ: ${result.taxPaid.toLocaleString("vi-VN")} VNĐ
 
@@ -685,7 +553,6 @@ if (popupSeen) {
     : "DỰ TÍNH THUẾ 2026"}
 </h1>
 <div className="flex flex-col md:flex-row justify-center items-center gap-8 mt-2 mb-2">
-
   <div className="flex items-center gap-3">
     <span className="text-base font-semibold text-slate-800">
       Năm tính thuế
@@ -708,9 +575,20 @@ if (popupSeen) {
 
     <select
   value={taxPayerType}
-  onChange={(e) =>
-    setTaxPayerType(e.target.value)
-  }
+  onChange={(e) => {
+    setTaxPayerType(e.target.value);
+
+    setResult({
+        totalIncome: 0,
+        deduction: 0,
+        insuranceDeduction: 0,
+        personalDeduction: 0,
+        taxableIncome: 0,
+        taxPayable: 0,
+        taxPaid: 0,
+        refundOrPayMore: 0,
+    });
+}}
   className="rounded-xl border border-[#177D96] bg-white px-4 py-2 text-[#C26A1B] text-center font-semibold"
 >
   <option value="employee">
@@ -721,10 +599,7 @@ if (popupSeen) {
     Giám đốc không hưởng lương
   </option>
 
-  <option value="business">
-  Chủ hộ kinh doanh cá thể
-  </option>
-</select>
+  </select>
 
   </div>
 </div>
@@ -733,6 +608,7 @@ if (popupSeen) {
     ? "Áp dụng biểu thuế TNCN 5 bậc năm 2026"
     : "Áp dụng biểu thuế TNCN 7 bậc năm 2025"}
 </p>
+
 <div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
   <div className="lg:col-span-7 pr-2">
     <div className="bg-slate-50 rounded-xl p-4">
@@ -750,19 +626,15 @@ if (popupSeen) {
 
   <div>
   <h2 className="font-bold text-xl">
-  {taxPayerType === "business"
-    ? "1️⃣ DOANH THU HỘ KINH DOANH"
-    : taxPayerType === "director"
-    ? "1️⃣ THU NHẬP CHỊU THUẾ KHÁC"
-    : "1️⃣ THU NHẬP TỪ LƯƠNG (THỰC NHẬN)"}
+  {taxPayerType === "director"
+    ? "1️⃣ THU NHẬP CHỊU THUẾ"
+    : "1️⃣ THU NHẬP TỪ LƯƠNG"}
 </h2>
 
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
-  {taxPayerType === "business"
-  ? "Tổng doanh thu trong năm"
-  : taxPayerType === "director"
-  ? "Thu nhập đầu tư, cổ tức, thu nhập khác..."
-  : "Lũy kế từ đầu năm bao gồm thưởng, phụ cấp ..."}
+  {taxPayerType === "director"
+  ? "Thu nhập trước khi trừ thuế TNCN (đầu tư, cổ tức, thu nhập khác...)."
+  : "Tổng lương trước khi trừ BHXH và thuế TNCN (bao gồm thưởng, phụ cấp...)"}
 </p>
 
 </div>
@@ -770,299 +642,29 @@ if (popupSeen) {
   <div className="relative w-full md:w-auto">
 
   <input
-  type="text"
-  value={taxPayerType === "business" ? businessIncome : salary}
-  onChange={(e) => {
-    if (taxPayerType === "business") {
-      setBusinessIncome(formatInputNumber(e.target.value));
-    } else {
-      setSalary(formatInputNumber(e.target.value));
+    type="text"
+    value={salary}
+    onChange={(e) =>
+      setSalary(
+        formatInputNumber(e.target.value)
+      )
     }
-  }}
     placeholder={
-  taxPayerType === "business"
-    ? "Nhập doanh thu"
-    : taxPayerType === "director"
+  taxPayerType === "director"
     ? "Nhập số tiền"
     : "Nhập số lương"
 }
     className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:text-base placeholder:font-normal placeholder:italic placeholder:text-amber-700"
   />
+
   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-700 font-bold text-lg">
     VNĐ
   </span>
-</div>
-</div>
-{taxPayerType !== "business" && (
-<div className="mt-3 mb-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-  <p className="text-base text-amber-700 italic text-center">
-    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
-  </p>
-  </div>
-  )}
-{taxPayerType === "business" && (
-<div className="mt-4">
-
-  {/* PC */}
-  <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-3 items-center">
-
-    <label className="font-semibold text-[#177D96] lg:whitespace-nowrap">
-      📌 Ngành nghề kinh doanh chính
-      <span className="text-red-500 ml-1">*</span>
-    </label>
-
-    <select
-      value={businessType}
-      onChange={(e) => {
-        setBusinessType(e.target.value);
-        setBusinessTypeError(false);
-      }}
-      className={`w-full rounded-xl text-center px-4 py-2.5 bg-white border ${
-        businessTypeError
-          ? "border-red-400"
-          : "border-[#177D96]"
-      } ${
-        !businessType
-          ? "text-[#D46A00] italic"
-          : "text-black not-italic"
-      }`}
-    >
-      <option value="" disabled>
-        Chọn ngành nghề kinh doanh
-      </option>
-
-      <option value="goods">
-        Bán hàng hóa
-      </option>
-
-      <option value="service">
-        Dịch vụ
-      </option>
-
-      <option value="production">
-        Sản xuất, vận tải
-      </option>
-
-      <option value="other">
-        Hoạt động kinh doanh khác
-      </option>
-    </select>
-
-    {businessTypeError && (
-  <div className="lg:col-start-2">
-    <p className="text-base text-red-600 italic text-center">
-      ⚠️ Vui lòng chọn ngành nghề kinh doanh.
-    </p>
-  </div>
-)}
-
-{businessType && (
-
-<div className="lg:col-start-2">
-
-  <p className="text-sm italic text-[#177D96] text-center">
-
-      {businessType === "goods" &&
-        "ℹ️ Áp dụng tỷ lệ thuế TNCN 0,5% trên doanh thu."}
-
-      {businessType === "service" &&
-        "ℹ️ Áp dụng tỷ lệ thuế TNCN 2% trên doanh thu."}
-
-      {businessType === "production" &&
-        "ℹ️ Áp dụng tỷ lệ thuế TNCN 1,5% trên doanh thu."}
-
-      {businessType === "other" &&
-        "ℹ️ Áp dụng tỷ lệ thuế TNCN 1% trên doanh thu."}
-    </p>
 
 </div>
 
-  )}
-
-    <label className="font-semibold text-[#177D96] lg:whitespace-nowrap">
-      📌 Thu nhập Affiliate kê khai theo
-      <span className="text-red-500 ml-1">*</span>
-    </label>
-
-    <div
-      className={`rounded-xl border px-5 py-2 bg-white ${
-        affiliateTaxError
-          ? "border-red-400"
-          : "border-[#177D96]"
-      }`}
-    >
-      <div className="flex flex-col lg:flex-row justify-center gap-3 lg:gap-16">
-
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name="affiliateTaxMode"
-            value="personal"
-            checked={affiliateTaxMode === "personal"}
-            onChange={(e) => {
-              setAffiliateTaxMode(e.target.value);
-              setAffiliateTaxError(false);
-            }}
-          />
-          <span>Cá nhân</span>
-        </label>
-
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name="affiliateTaxMode"
-            value="business"
-            checked={affiliateTaxMode === "business"}
-            onChange={(e) => {
-              setAffiliateTaxMode(e.target.value);
-              setAffiliateTaxError(false);
-            }}
-          />
-          <span>Hộ kinh doanh</span>
-        </label>
-
-      </div>
-      {affiliateTaxError && (
-  <div className="lg:col-start-2">
-    <p className="text-base text-red-600 italic text-center">
-      ⚠️ Vui lòng chọn hình thức nhận thu nhập Affiliate.
-    </p>
-  </div>
-)}
-    </div>
-
-  </div>
-
-  {/* Mobile giữ nguyên */}
-    <div className="mt-4 mb-3 grid grid-cols-1 font-bold text-[#177D96] lg:grid-cols-[260px_1fr] items-center gap-4">
-    📌 Thu nhập cá nhân (nếu có)
-    
-      {affiliateTaxMode === "personal" && (
-      <div className="flex justify-end">
-        <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-5 py-1">
-      <p className="text-sm text-blue-700 italic text-center">
-        ℹ️ Doanh thu Affiliate không gộp vào doanh thu hộ kinh doanh để tính thuế.
-      </p>
-    </div>
-    </div>
-  )}
-
-  {affiliateTaxMode === "business" && (
-    <div className="flex justify-end">
-  <div className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-5 py-1">
-      <p className="text-sm text-amber-700 italic text-center">
-        ℹ️ Doanh thu Affiliate được gộp vào doanh thu hộ kinh doanh để tính thuế.
-      </p>
-    </div>
-    </div>
-  )}
-  </div>
-  </div>
-)}
-
-{taxPayerType === "business" && (
-<>
-  
-<div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-  <p className="text-base text-amber-700 italic text-center">
-    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
-  </p>
-  </div>
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-end">
-
-    <div>
-      <label className="font-semibold text-center text-base italic block mb-2">
-        Thu nhập từ lương
-      </label>
-
-      <input
-        type="text"
-        value={salary}
-
-onChange={(e) =>
-  setSalary(
-    formatInputNumber(e.target.value)
-  )
-}
-        placeholder="Tổng lương trong năm"
-        className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
-  salary
-    ? "text-base not-italic"
-    : "text-sm italic"
-} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
-      />
-    </div>
-
-    <div>
-      <label className="font-semibold text-center text-base italic block mb-2">
-        Thuế lương đã khấu trừ
-      </label>
-
-      <input
-        type="text"
-        value={salaryTax}
-        onChange={(e) =>
-          setSalaryTax(
-            formatInputNumber(e.target.value)
-          )
-        }
-        placeholder="Tổng thuế TNCN"
-        className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
-  salary
-    ? "text-base not-italic"
-    : "text-sm italic"
-} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
-      />
-    </div>
-  
-<div>
-  <label className="font-semibold text-center text-base italic block mb-2">
-    BHXH đã đóng
-  </label>
-
-  <input
-    type="text"
-    value={insuranceAmount}
-    onChange={(e) =>
-      setInsuranceAmount(
-        formatInputNumber(e.target.value)
-      )
-    }
-    placeholder="Tổng BHXH"
-    className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
-  salary
-    ? "text-base not-italic"
-    : "text-sm italic"
-} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
-  />
 </div>
 
-<div>
-  <label className="font-semibold text-center text-base italic block mb-2">
-    Người phụ thuộc
-  </label>
-
-  <select
-    value={dependents}
-    onChange={(e) =>
-      setDependents(e.target.value)
-    }
-    className="w-full h-9.5 border border-[#177D96] rounded-lg px-2 text-center bg-white text-base"
-  >
-    {[...Array(11)].map((_, i) => (
-      <option key={i} value={i}>
-        {i}
-      </option>
-    ))}
-  </select>
-</div>
-</div>
-</>
-)}
-
-{(
-  taxPayerType !== "business"
-) && (
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
 
   {/* Người phụ thuộc */}
@@ -1151,9 +753,18 @@ onChange={(e) =>
 />
  </div>
  </div>
-)}
-  
+
+
+<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
+  <p className="text-base text-amber-700 italic text-center">
+    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
+  </p>
+  <p className="text-base text-amber-700 italic text-center mt-1">
+    ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
+  </p>
 </div>
+  
+ </div>
           <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 mb-5">
 
   <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between md:items-center mb-4">
@@ -1697,121 +1308,17 @@ onChange={(e) =>
   </div>
 </div>
   )}
-   {hasCalculated && (
-<div className="space-y-3 text-base">
-
-  {taxPayerType !== "business" ? (
+            <div className="space-y-3 text-base">
 
   <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
-    <span className="font-medium flex-1">
-      💰 Tổng thu nhập
-    </span>
+  <span className="font-medium flex-1">
+    💰 Tổng thu nhập
+  </span>
 
-    <span className="font-semibold text-right shrink-0">
-      {formatMoney(result.totalIncome)}
-    </span>
-  </div>
-
-) : affiliateTaxMode === "personal" ? (
-
-  <>
-    <div className="bg-white rounded-lg px-4 py-3 mb-2">
-
-      <div className="flex justify-between">
-        <span className="font-bold">
-          💰 Doanh thu hộ kinh doanh (cả năm)
-        </span>
-
-        <span className="font-semibold">
-          {formatMoney(result.businessRevenue)}
-        </span>
-      </div>
-{result.businessRevenue > 0 && (
-      <div className="flex justify-between text-sm text-gray-500 italic mt-2 pl-5">
-        <span>
-  Thuế suất TNCN
-</span>
-
-<span>
-  {businessTaxRate}
-</span>
-      </div>
-  )}
-    </div>
-
-    <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
-      <span className="font-bold flex-1">
-        👤 Thu nhập từ lương và Affiliate
-      </span>
-
-      <span className="font-semibold text-right shrink-0">
-        {formatMoney(
-  result.salaryIncome +
-  result.affiliateIncome
-)}
-      </span>
-    </div>
-
-  </>
-
-) : (
-
-  <>
-    <div className="bg-white rounded-lg px-4 py-3 mb-2">
-
-      <div className="flex justify-between">
-        <span className="font-bold">
-          💰 Doanh thu hộ kinh doanh (cả năm)
-        </span>
-
-        <span className="font-semibold">
-          {formatMoney(
-  result.businessRevenue +
-  result.affiliateIncome
-)}
-        </span>
-      </div>
-
-      <div className="flex justify-between text-sm text-gray-500 italic mt-2 pl-5">
-        <span>
-          Hoạt động kinh doanh chính ({businessTaxRate})
-        </span>
-
-        <span>
-          {formatMoney(result.businessRevenue)}
-        </span>
-      </div>
-
-      <div className="flex justify-between text-sm text-gray-500 italic mt-1 pl-5">
-        <span>
-          Affiliate ({affiliateBusinessTaxRate})
-        </span>
-
-        <span>
-          {formatMoney(
-            parseNumber(shopeeIncome) +
-            parseNumber(tiktokIncome) +
-            parseNumber(lazadaIncome) +
-            parseNumber(otherIncome)
-          )}
-        </span>
-      </div>
-
-    </div>
-
-    <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
-      <span className="font-bold flex-1">
-        👤 Thu nhập cá nhân (nếu có)
-      </span>
-
-      <span className="font-semibold text-right shrink-0">
-        {formatMoney(result.salaryIncome)}
-      </span>
-    </div>
-
-  </>
-
-)}
+  <span className="font-semibold text-right shrink-0">
+    {formatMoney(result.totalIncome)}
+  </span>
+</div>
 
  <div className="bg-white rounded-lg px-4 py-3 mb-2">
 
@@ -1820,7 +1327,7 @@ onChange={(e) =>
   onClick={() => setShowDeductionDetail(!showDeductionDetail)}
   className="w-full flex items-center justify-between"
 >
-  <span className="font-bold text-left">
+  <span className="font-medium text-left">
     🟢 Tổng giảm trừ
   </span>
 
@@ -1862,7 +1369,7 @@ onChange={(e) =>
 
 <div className="flex justify-between items-start gap-3 bg-orange-50 rounded-lg px-4 py-3 mb-2">              
   <span className="font-bold text-orange-700 flex-1">
-    📊 Thu nhập chịu thuế
+    📊 Thu nhập tính thuế
   </span>
 
   <span className="font-bold text-orange-700 text-right shrink-0">
@@ -1942,7 +1449,7 @@ onChange={(e) =>
 
 )}
                   </div>
-)}
+
             <div className="mt-5 text-sm text-gray-500 border-t pt-3">
 
               <p>
@@ -1968,6 +1475,7 @@ onChange={(e) =>
             </div>
 </div>
 </div>
+
 </form>
 {showZaloPopup && (
   <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
@@ -1985,7 +1493,7 @@ onChange={(e) =>
         </h2>
 
         <p className="mt-3 text-gray-600">
-          Website được sử dụng miễn phí
+          Website được phát triển và duy trì miễn phí.
         </p>
 
         <p className="mt-2 text-gray-600">

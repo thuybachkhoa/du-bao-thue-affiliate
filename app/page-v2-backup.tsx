@@ -50,6 +50,7 @@ const [showZaloBanner, setShowZaloBanner] =
   useState(false);  
 const [isCalculating, setIsCalculating] =
   useState(false);  
+  const [hasCalculated, setHasCalculated] = useState(false);
     const [result, setResult] = useState({
   totalIncome: 0,
 
@@ -367,6 +368,7 @@ setResult({
   affiliateBusinessTax,
   personalTax,
 });
+setHasCalculated(true);
 setIsCalculating(false);
     };
     const handleContinueToResult = () => {
@@ -983,7 +985,11 @@ onChange={(e) =>
   )
 }
         placeholder="Tổng lương trong năm"
-        className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+        className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
+  salary
+    ? "text-base not-italic"
+    : "text-sm italic"
+} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
       />
     </div>
 
@@ -1001,7 +1007,11 @@ onChange={(e) =>
           )
         }
         placeholder="Tổng thuế TNCN"
-        className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+        className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
+  salary
+    ? "text-base not-italic"
+    : "text-sm italic"
+} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
       />
     </div>
   
@@ -1019,7 +1029,11 @@ onChange={(e) =>
       )
     }
     placeholder="Tổng BHXH"
-    className="w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center text-sm italic"
+    className={`w-full border border-[#177D96] bg-white rounded-lg px-2 py-2 text-center ${
+  salary
+    ? "text-base not-italic"
+    : "text-sm italic"
+} placeholder:text-sm placeholder:italic placeholder:text-slate-400`}
   />
 </div>
 
@@ -1033,7 +1047,7 @@ onChange={(e) =>
     onChange={(e) =>
       setDependents(e.target.value)
     }
-    className="w-full h-9.5 border border-[#177D96] rounded-lg px-2 text-center bg-white text-sm"
+    className="w-full h-9.5 border border-[#177D96] rounded-lg px-2 text-center bg-white text-base"
   >
     {[...Array(11)].map((_, i) => (
       <option key={i} value={i}>
@@ -1683,7 +1697,8 @@ onChange={(e) =>
   </div>
 </div>
   )}
-           <div className="space-y-3 text-base"> 
+   {hasCalculated && (
+<div className="space-y-3 text-base">
 
   {taxPayerType !== "business" ? (
 
@@ -1708,10 +1723,10 @@ onChange={(e) =>
         </span>
 
         <span className="font-semibold">
-          {formatMoney(parseNumber(businessIncome))}
+          {formatMoney(result.businessRevenue)}
         </span>
       </div>
-
+{result.businessRevenue > 0 && (
       <div className="flex justify-between text-sm text-gray-500 italic mt-2 pl-5">
         <span>
   Thuế suất TNCN
@@ -1721,7 +1736,7 @@ onChange={(e) =>
   {businessTaxRate}
 </span>
       </div>
-
+  )}
     </div>
 
     <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
@@ -1731,12 +1746,9 @@ onChange={(e) =>
 
       <span className="font-semibold text-right shrink-0">
         {formatMoney(
-          parseNumber(salary) +
-          parseNumber(shopeeIncome) +
-          parseNumber(tiktokIncome) +
-          parseNumber(lazadaIncome) +
-          parseNumber(otherIncome)
-        )}
+  result.salaryIncome +
+  result.affiliateIncome
+)}
       </span>
     </div>
 
@@ -1754,11 +1766,8 @@ onChange={(e) =>
 
         <span className="font-semibold">
           {formatMoney(
-  parseNumber(businessIncome) +
-  parseNumber(shopeeIncome) +
-  parseNumber(tiktokIncome) +
-  parseNumber(lazadaIncome) +
-  parseNumber(otherIncome)
+  result.businessRevenue +
+  result.affiliateIncome
 )}
         </span>
       </div>
@@ -1769,7 +1778,7 @@ onChange={(e) =>
         </span>
 
         <span>
-          {formatMoney(parseNumber(businessIncome))}
+          {formatMoney(result.businessRevenue)}
         </span>
       </div>
 
@@ -1933,7 +1942,7 @@ onChange={(e) =>
 
 )}
                   </div>
-
+)}
             <div className="mt-5 text-sm text-gray-500 border-t pt-3">
 
               <p>
