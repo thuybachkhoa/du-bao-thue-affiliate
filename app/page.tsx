@@ -671,7 +671,7 @@ if (popupSeen) {
 </div>
 <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-1">
   <p className="text-base text-gray-700 text-center">
-    💡 Các khoản như cổ tức, đầu tư vốn, chuyển nhượng chứng khoán...được tính theo quy định riêng.
+    💡 Các khoản như cổ tức, đầu tư vốn, chuyển nhượng chứng khoán ... được tính theo quy định riêng.
   </p>
   
      <p className="text-base text-gray-700 text-center">
