@@ -595,10 +595,6 @@ if (popupSeen) {
     Người lao động
   </option>
 
-  <option value="director">
-    Giám đốc không hưởng lương
-  </option>
-
   <option value="business">
     Hộ kinh doanh
   </option>
@@ -626,7 +622,7 @@ if (popupSeen) {
   </div>
 )}
 
-{taxPayerType !== "business" && (
+{taxPayerType === "employee" && (
 <div className="mt-4 lg:grid lg:grid-cols-12 lg:gap-6">
   <div className="lg:col-span-7 pr-2">
     <div className="bg-slate-50 rounded-xl p-4">
@@ -644,15 +640,11 @@ if (popupSeen) {
 
   <div>
   <h2 className="font-bold text-xl">
-  {taxPayerType === "director"
-    ? "1️⃣ THU NHẬP CHỊU THUẾ"
-    : "1️⃣ THU NHẬP TỪ LƯƠNG"}
+  1️⃣ THU NHẬP TỪ LƯƠNG
     </h2>
  
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
-  {taxPayerType === "director"
-  ? "Thu nhập trước khi trừ thuế TNCN (đầu tư, cổ tức, thu nhập khác...)."
-  : "Lũy kế từ đầu năm, chưa trừ BHXH và thuế TNCN (bao gồm thưởng, phụ cấp...)"}
+  Lũy kế từ đầu năm, chưa trừ BHXH và thuế TNCN (bao gồm thưởng, phụ cấp...)
 </p>
 
 </div>
@@ -667,11 +659,7 @@ if (popupSeen) {
         formatInputNumber(e.target.value)
       )
     }
-    placeholder={
-  taxPayerType === "director"
-    ? "Nhập số tiền"
-    : "Nhập số lương"
-}
+    placeholder="Nhập số lương"
     className="border border-amber-200 rounded-xl px-3 py-3 h-14 w-full md:w-52 pr-14 text-center font-bold text-lg text-amber-700 bg-amber-50 placeholder:text-base placeholder:font-normal placeholder:italic placeholder:text-amber-700"
   />
 
@@ -1272,20 +1260,20 @@ if (popupSeen) {
 />
 
     <div>
-      <div className="text-green-600 text-lg font-semibold uppercase">
+      <div className="text-green-600 text-xl font-semibold uppercase">
         {taxYear === "2025"
   ? "ĐƯỢC HOÀN THUẾ"
   : "DỰ KIẾN ĐƯỢC HOÀN THUẾ"}
       </div>
 
-      <div className="text-2xl md:text-4xl font-bold text-green-600 break-all">
+      <div className="text-xl md:text-4xl font-bold text-green-600 break-all">
         {formatMoney(result.refundOrPayMore).replace(" VNĐ", "")}
       
      <span className="text-2xl font-semibold text-green-600 ml-2">
     VNĐ
   </span>
       </div>
-      <div className="text-sm italic text-green-600 mt-1">
+      <div className="text-base italic text-green-600 mt-1">
     ({numberToVietnameseWords(
   Math.round(result.refundOrPayMore)
 )})
@@ -1294,38 +1282,39 @@ if (popupSeen) {
   </div>
 </div>
   ) : (
-    <div className="bg-red-50 border border-red-200 rounded-2xl p-3 mb-5">
-  <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+  <div className="bg-red-50 border border-red-200 rounded-2xl p-3 mb-3">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center">
 
     <img
-  src="/wallet-red.png"
-  alt="Nộp thêm"
-  width={80}
-  height={80}
-  className="shrink-0"
-/>
+      src="/wallet-red.png"
+      alt="Nộp thêm"
+      width={80}
+      height={80}
+      className="shrink-0"
+    />
 
     <div>
-      <div className="text-red-600 text-base font-semibold uppercase">
+      <div className="text-red-600 text-xl font-semibold uppercase">
         {taxYear === "2025"
-  ? "PHẢI NỘP THÊM"
-  : "DỰ KIẾN PHẢI NỘP THÊM"}
+          ? "PHẢI NỘP THÊM"
+          : "DỰ KIẾN PHẢI NỘP THÊM"}
       </div>
 
       <div className="text-2xl md:text-4xl font-bold text-red-600 break-all">
         {formatMoney(
-  Math.abs(result.refundOrPayMore)
-).replace(" VNĐ", "")}
+          Math.abs(result.refundOrPayMore)
+        ).replace(" VNĐ", "")}
 
-      <span className="text-xl font-semibold text-red-600 ml-2">
-    VNĐ
-  </span>
+        <span className="text-2xl font-semibold text-red-600 ml-2">
+          VNĐ
+        </span>
       </div>
-      <div className="text-sm italic text-red-600 mt-1">
-    ({numberToVietnameseWords(
-    Math.abs(result.refundOrPayMore)
-  )})
-  </div>
+
+      <div className="text-base italic text-red-600 mt-1">
+        ({numberToVietnameseWords(
+          Math.abs(result.refundOrPayMore)
+        )})
+      </div>
     </div>
 
   </div>
@@ -1368,7 +1357,7 @@ if (popupSeen) {
 {showDeductionDetail && (
   <div className="mt-2 ml-8 border-t border-slate-100 pt-2">
 
-    <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between text-base text-gray-500 italic mt-1 pl-4">
       <span>• Bảo hiểm xã hội</span>
 
       <span className="text-right shrink-0">
@@ -1376,7 +1365,7 @@ if (popupSeen) {
 </span>
     </div>
 
-    <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
+    <div className="flex flex-col md:flex-row md:justify-between text-base text-gray-500 italic mt-1 pl-4">
       <span>
         • Giảm trừ gia cảnh
       </span>
