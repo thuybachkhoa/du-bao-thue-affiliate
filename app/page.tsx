@@ -640,7 +640,7 @@ if (popupSeen) {
 
   <div>
   <h2 className="font-bold text-xl">
-  1️⃣ THU NHẬP TỪ LƯƠNG
+  1️⃣ THU NHẬP CHỊU THUẾ TỪ TIỀN LƯƠNG, TIỀN CÔNG
     </h2>
  
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
