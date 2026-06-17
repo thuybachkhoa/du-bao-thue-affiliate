@@ -647,12 +647,12 @@ if (popupSeen) {
   {taxPayerType === "director"
     ? "1️⃣ THU NHẬP CHỊU THUẾ"
     : "1️⃣ THU NHẬP TỪ LƯƠNG"}
-</h2>
-
+    </h2>
+ 
   <p className="text-ml text-gray-500 italic pl-8 mt-1">
   {taxPayerType === "director"
   ? "Thu nhập trước khi trừ thuế TNCN (đầu tư, cổ tức, thu nhập khác...)."
-  : "Tổng lương trước khi trừ BHXH và thuế TNCN (bao gồm thưởng, phụ cấp...)"}
+  : "Lũy kế từ đầu năm, chưa trừ BHXH và thuế TNCN (bao gồm thưởng, phụ cấp...)"}
 </p>
 
 </div>
@@ -678,28 +678,28 @@ if (popupSeen) {
   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-700 font-bold text-lg">
     VNĐ
   </span>
-
 </div>
 
 </div>
-<div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-1">
-
-  <p className="text-base text-amber-700 italic text-center">
-
-    ℹ️ Tra cứu VssID (BHXH) và eTax Mobile (Thuế TNCN) để nhập số liệu chính xác.
-
+<div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-1">
+  <p className="text-base text-gray-700 text-center">
+    💡 Các khoản như cổ tức, đầu tư vốn, chuyển nhượng chứng khoán...được tính theo quy định riêng.
   </p>
-
-  <p className="text-base text-amber-700 italic text-center mt-1">
-
-    ⚠️ BHXH được giảm trừ tối đa theo mức đóng BHXH bắt buộc do pháp luật quy định.
-
+  
+     <p className="text-base text-gray-700 text-center">
+    💡 Tra cứu{" "}
+    <span className="font-semibold text-blue-700">
+      VssID (BHXH)
+    </span>{" "}
+    và{" "}
+    <span className="font-semibold text-blue-700">
+      eTax Mobile (Thuế TNCN)
+    </span>{" "}
+    để nhập số liệu chính xác.
   </p>
-
-</div>
+  </div>
 
 <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-center">
-
   {/* Người phụ thuộc */}
   <div>
   <label className="font-semibold text-base block mb-2 text-center">
@@ -1121,11 +1121,11 @@ if (popupSeen) {
 ) : (
   <>
     <span className="text-3xl mr-3">
-      🧮
+     🧾
     </span>
 
     <div className="text-center">
-      <div className="font-bold text-lg">
+      <div className="font-bold text-xl">
         TÍNH TOÁN NGAY
       </div>
 
@@ -1334,7 +1334,7 @@ if (popupSeen) {
             <div className="space-y-3 text-base">
 
   <div className="flex justify-between items-start gap-3 bg-white rounded-lg px-4 py-3 mb-2">
-  <span className="font-medium flex-1">
+  <span className="font-bold flex-1">
     💰 Tổng thu nhập
   </span>
 
@@ -1350,7 +1350,7 @@ if (popupSeen) {
   onClick={() => setShowDeductionDetail(!showDeductionDetail)}
   className="w-full flex items-center justify-between"
 >
-  <span className="font-medium text-left">
+  <span className="font-bold text-left">
     🟢 Tổng giảm trừ
   </span>
 
@@ -1366,10 +1366,10 @@ if (popupSeen) {
 </button>
 
 {showDeductionDetail && (
-  <div className="mt-2 border-t border-slate-100 pt-2">
+  <div className="mt-2 ml-8 border-t border-slate-100 pt-2">
 
     <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
-      <span>1️⃣ Bảo hiểm xã hội</span>
+      <span>• Bảo hiểm xã hội</span>
 
       <span className="text-right shrink-0">
   {formatMoney(result.insuranceDeduction)}
@@ -1378,7 +1378,7 @@ if (popupSeen) {
 
     <div className="flex flex-col md:flex-row md:justify-between text-sm text-gray-500 italic mt-1 pl-4">
       <span>
-        2️⃣  Giảm trừ gia cảnh
+        • Giảm trừ gia cảnh
       </span>
 
       <span className="text-right shrink-0">
@@ -1390,7 +1390,7 @@ if (popupSeen) {
 </div>
 <hr className="my-3 border-slate-300" />
 
-<div className="flex justify-between items-start gap-3 bg-orange-50 rounded-lg px-4 py-3 mb-2">              
+<div className="flex justify-between items-start gap-3 bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 mb-2">             
   <span className="font-bold text-orange-700 flex-1">
     📊 Thu nhập tính thuế
   </span>
@@ -1400,12 +1400,11 @@ if (popupSeen) {
   </span>
 </div>
 
-  <div className="flex justify-between items-start gap-3 bg-[#208AA2]/5 rounded-lg px-4 py-3 mb-2 border border-teal-200">
-  <span className="font-bold text-[#177D96] flex-1">
+  <div className="flex justify-between items-start gap-3 bg-teal-50 border border-teal-300 rounded-lg px-4 py-3 mb-2">
+  <span className="font-bold text-teal-700 flex-1">
     🏛️ Tổng thuế phải nộp
-  </span>
-
-  <span className="font-bold text-[#177D96] text-right shrink-0">
+  </span> 
+  <span className="font-bold text-teal-700 text-right shrink-0">
     {formatMoney(result.taxPayable)}
   </span>
 </div>
