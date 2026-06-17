@@ -603,6 +603,16 @@ if (popupSeen) {
 
   </div>
 </div>
+{/* Banner */}
+<div className="mt-2 mb-5 flex justify-center">
+  <div>
+    <span className="font-semibold text-green-700">
+      {taxYear === "2025"
+        ? "✅ Áp dụng biểu thuế TNCN 7 bậc (2025)"
+        : "✅ Áp dụng biểu thuế TNCN 5 bậc theo Luật 71/2025/QH15"}
+    </span>
+  </div>
+</div>
    {taxPayerType === "business" && (
   <div className="mt-6 max-w-3xl mx-auto rounded-2xl border border-blue-200 bg-slate-100 p-8 text-center">
     <div className="text-5xl mb-4">🚧</div>
